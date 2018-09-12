@@ -38,7 +38,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
 
       - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_NETWORKID=aberic
+      - CORE_PEER_NETWORKID=fabric_car
       - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
       - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
@@ -48,10 +48,10 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
-      # - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=aberic
+      # - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_car
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=aberic_default
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_car_default
       - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
@@ -75,7 +75,7 @@ services:
     networks:
       default:
         aliases:
-          - aberic
+          - fabric_car
     extra_hosts:
      - "orderer.example.com:172.17.184.16"
 
@@ -99,7 +99,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
         - /var/run/:/host/var/run/
-        - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/aberic/chaincode/go
+        - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/fabric_car/chaincode/go
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
