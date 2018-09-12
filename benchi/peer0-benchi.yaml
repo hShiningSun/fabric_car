@@ -26,10 +26,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/73e99042cd9b743c6f39a332323f4d9dfcb002649bf50db772671123d02ed776_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ab2c53612febbeab87fd44c9dd0447c3c2ef705b27cdaa68ef30f0dd4dd18396_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/73e99042cd9b743c6f39a332323f4d9dfcb002649bf50db772671123d02ed776_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ab2c53612febbeab87fd44c9dd0447c3c2ef705b27cdaa68ef30f0dd4dd18396_sk -b admin:adminpw -d'
     volumes:
       - ../GenesisFile/crypto-config/peerOrganizations/benchi.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
