@@ -1,9 +1,10 @@
 
-echo "===== 将go1.10.2.linux-amd64.tar.gz 文件拷贝到/usr/local 下 ====="
+echo "===== install go1.10.2 ====="
 #cp -Rf other/goinstallfile/go1.10.2.linux-amd64.tar.gz /usr/local
 # cp -Rf other/goinstallfile/go /usr/local
 (
     cd /usr/local
+    curl -O https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
     tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
 )
 
