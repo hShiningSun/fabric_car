@@ -23,10 +23,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.chunyuhui1.car.com
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.chunyuhui.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/910d1f2b5b6eda69f45ee89d8be1eb2651a2364d11a0767768a1c9611716ecb0_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/32eaa65726ea3b8bea98295e55e8f2a3611b727ac1dbbe0bdf64c1569726f03f_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.chunyuhui.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/910d1f2b5b6eda69f45ee89d8be1eb2651a2364d11a0767768a1c9611716ecb0_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.chunyuhui.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/32eaa65726ea3b8bea98295e55e8f2a3611b727ac1dbbe0bdf64c1569726f03f_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/chunyuhui.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
