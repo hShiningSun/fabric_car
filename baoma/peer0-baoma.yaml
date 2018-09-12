@@ -35,7 +35,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
 
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
@@ -97,8 +97,8 @@ services:
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=172.17.184.15:7051  #peer0.baoma.car.com:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=172.17.184.15:7052 #peer0.baoma.car.com:7052
+      - CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
       - CORE_PEER_LOCALMSPID=baomaMSP
       - CORE_PEER_TLS_ENABLED=false
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/tls/server.crt
