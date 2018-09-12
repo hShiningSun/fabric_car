@@ -1,0 +1,61 @@
+OrdererOrgs:
+  - Name: car
+    Domain: car.com
+    Specs:
+      - Hostname: car0
+      - Hostname: car1
+      - Hostname: car2
+
+PeerOrgs:
+  - Name: baoma
+    Domain: baoma.car.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: benchi
+    Domain: benchi.car.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: falali
+    Domain: falali.car.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  
+    # Specs:
+    #   - Hostname: ly
+    #     CommonName: ly1314.benchi.car.com
+    #   - Hostname: mm
+    #   - Hostname: xx
+
+
+  
+#foo27  bar baz
+
+  # - Name: Org3
+  #   Domain: org3.car.com
+  #   Template:
+  #     Count: 2
+  #   Users:
+  #     Count: 1
+
+  # - Name: Org4
+  #   Domain: org4.car.com
+  #   Template:
+  #     Count: 2
+  #   Users:
+  #     Count: 1
+
+  # - Name: Org5
+  #   Domain: org5.car.com
+  #   Template:
+  #     Count: 2
+  #   Users:
+  #     Count: 1
