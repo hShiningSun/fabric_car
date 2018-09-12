@@ -35,7 +35,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=59.110.136.102:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
 
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
@@ -121,4 +121,4 @@ services:
      - "car0.car.com:106.80.116.180"
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
-     - "peer0.baoma.car.com:59.110.136.102"
+     - "peer0.baoma.car.com:172.17.184.15"
