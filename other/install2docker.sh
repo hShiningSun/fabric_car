@@ -13,12 +13,17 @@ ca-certificates \
 curl \
 software-properties-common
 echo "====== add key ======"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 echo "====== set warehouse ======"
 sudo add-apt-repository \
-"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+"deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
 $(lsb_release -cs) \
 stable"
+# sudo add-apt-repository \
+# "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+# $(lsb_release -cs) \
+# stable"
 
 
 echo "====== apt update ===="
