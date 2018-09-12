@@ -121,4 +121,4 @@ services:
      - "car0.car.com:39.105.34.144"
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
-     - "peer0.baoma.car.com:192.168.58.102"
+     - "peer0.baoma.car.com:59.110.136.102"
