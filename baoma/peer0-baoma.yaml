@@ -23,10 +23,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/021ecc1b5a5ebd73a8a1ade12226c284682c7533fb8edf2ccf402ba100e3f393_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/38183739fb053c7c7029ff97c42809f1b97234d9b9dea0c59d46104587c62d34_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/021ecc1b5a5ebd73a8a1ade12226c284682c7533fb8edf2ccf402ba100e3f393_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/38183739fb053c7c7029ff97c42809f1b97234d9b9dea0c59d46104587c62d34_sk -b admin:adminpw -d'
     volumes:
       - ../GenesisFile/crypto-config/peerOrganizations/baoma.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
@@ -35,8 +35,8 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      #- CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
+      - CORE_LEDorderS=couchdb:5984
+      #- CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
 
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
@@ -98,10 +98,10 @@ services:
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_ID=cli
-      #- CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
-      - CORE_PEER_ADDRESS=172.17.184.15:7051
-      #- CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=172.17.184.15:7052
+      - CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
+      #- CORE_PEER_ADDRESS=172.17.184.15:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
+      #- CORE_PEER_CHAINCODELISTENADDRESS=172.17.184.15:7052
       - CORE_PEER_LOCALMSPID=baomaMSP
       - CORE_PEER_TLS_ENABLED=false
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/tls/server.crt

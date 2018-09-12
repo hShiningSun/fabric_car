@@ -101,10 +101,10 @@ Orderer: &OrdererDefaults
     OrdererType: kafka
 
     Addresses:
-        - car0.car.com:7050
+        - 106.80.116.18:7050
         - car1.car.com:7050
         - car2.car.com:7050
-
+    
     BatchTimeout: 2s
 
     BatchSize:
