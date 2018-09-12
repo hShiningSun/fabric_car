@@ -98,7 +98,7 @@ Organizations:
 
 Orderer: &OrdererDefaults
 
-    OrdererType: kafka
+    OrdererType: solo
 
     Addresses:
         - car0.car.com:7050
@@ -115,12 +115,12 @@ Orderer: &OrdererDefaults
 
         PreferredMaxBytes: 512 KB
 
-    Kafka:
-        Brokers:
-            - 192.168.56.109:9092
-            - 192.168.56.111:9092
-            - 192.168.56.110:9092
-            - 192.168.56.113:9092
+    # Kafka:
+    #     Brokers:
+    #         - 192.168.56.109:9092
+    #         - 192.168.56.111:9092
+    #         - 192.168.56.110:9092
+    #         - 192.168.56.113:9092
 
     Organizations:
 
