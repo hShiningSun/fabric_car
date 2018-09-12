@@ -23,10 +23,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/354d67da39de2e80d96b6e47d402b87f0abf86d5136363307d64c3ef54fc310c_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/237db786cbf985b38553e0810cac418ffedf2b17640ee45d3b385610c9473984_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/354d67da39de2e80d96b6e47d402b87f0abf86d5136363307d64c3ef54fc310c_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/237db786cbf985b38553e0810cac418ffedf2b17640ee45d3b385610c9473984_sk -b admin:adminpw -d'
     volumes:
       - ../GenesisFile/crypto-config/peerOrganizations/baoma.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
@@ -35,7 +35,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=192.168.58.102:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=59.110.136.102:5984
 
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
@@ -121,4 +121,4 @@ services:
      - "car0.car.com:192.168.0.132"
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
-     - "peer0.baoma.car.com:192.168.58.102"
+     - "peer0.baoma.car.com:59.110.136.102"

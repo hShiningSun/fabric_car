@@ -26,12 +26,12 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.benchi.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/benchi.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ../GenesisFile/crypto-config/peerOrganizations/benchi.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
   peer0.benchi.car.com:
     container_name: peer0.benchi.car.com
@@ -69,11 +69,11 @@ services:
     volumes:
         - /var/run/:/host/var/run/
         
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
+        - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
         
-        - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go
-        - ./crypto-config/peerOrganizations/benchi.car.com/peers/peer0.benchi.car.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/benchi.car.com/peers/peer0.benchi.car.com/tls:/etc/hyperledger/fabric/tls
+        - ../chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go
+        - ../GenesisFile/crypto-config/peerOrganizations/benchi.car.com/peers/peer0.benchi.car.com/msp:/etc/hyperledger/fabric/msp
+        - ../GenesisFile//crypto-config/peerOrganizations/benchi.car.com/peers/peer0.benchi.car.com/tls:/etc/hyperledger/fabric/tls
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -112,11 +112,11 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
         - /var/run/:/host/var/run/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
+        - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
 
-        - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go
-        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - ../chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go
+        - ../GenesisFile/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ../GenesisFile/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - peer0.benchi.car.com
     extra_hosts:

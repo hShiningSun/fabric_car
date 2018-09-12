@@ -16,6 +16,9 @@ IF_COUCHDB="$4"
 COMPOSE_FILE=peer0-baoma.yaml
 
 
+function printHelp (){
+echo "直接执行，没有花招"
+}
 
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
