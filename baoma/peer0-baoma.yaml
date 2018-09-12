@@ -83,9 +83,9 @@ services:
         aliases:
           - fabric_car
     extra_hosts:
-     - "car0.car.com:39.105.34.144"
-     - "car1.car.com:192.168.56.114"
-     - "car2.car.com:192.168.56.116"
+     - "car0.car.com:172.17.184.16"
+    #  - "car1.car.com:192.168.56.114"
+    #  - "car2.car.com:192.168.56.116"
 
   cli:
     container_name: cli
@@ -118,7 +118,7 @@ services:
     depends_on:
       - peer0.baoma.car.com
     extra_hosts:
-     - "car0.car.com:39.105.34.144"
-     - "car1.car.com:192.168.56.114"
-     - "car2.car.com:192.168.56.116"
-     - "peer0.baoma.car.com:59.110.136.102"
+     - "car0.car.com:172.17.184.16"
+    #  - "car1.car.com:192.168.56.114"
+    #  - "car2.car.com:192.168.56.116"
+     - "peer0.baoma.car.com:172.17.184.15"
