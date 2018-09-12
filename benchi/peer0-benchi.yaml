@@ -87,7 +87,7 @@ services:
         aliases:
           - fabric_car
     extra_hosts:
-     - "car0.car.com:192.168.0.132"
+     - "car0.car.com:106.80.116.180"
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
 
@@ -120,7 +120,7 @@ services:
     depends_on:
       - peer0.benchi.car.com
     extra_hosts:
-     - "car0.car.com:192.168.0.132"
+     - "car0.car.com:106.80.116.180"
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
      - "peer0.benchi.car.com:192.168.56.117"
