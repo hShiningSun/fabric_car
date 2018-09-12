@@ -40,7 +40,7 @@ services:
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
       - CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.baoma.car.com:7052
+      #- CORE_PEER_CHAINCODEADDRESS=peer0.baoma.car.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.baoma.car.com:7051
       - CORE_PEER_LOCALMSPID=baomaMSP
@@ -61,8 +61,6 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-      - CORE_PEET_GOPATH=/opt/gopath
-      - GOPATH=/opt/gopath
     volumes:
         - /var/run/:/host/var/run/
         - ../GenesisFile/chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
