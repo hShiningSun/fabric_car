@@ -78,6 +78,7 @@ services:
           - aberic
     extra_hosts:
      - "orderer.example.com:172.17.184.16"
+     - "couchdb:172.17.184.15"
 
   cli:
     container_name: cli
