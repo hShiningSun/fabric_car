@@ -9,7 +9,7 @@ services:
 
   car0.car.com:
     container_name: car0.car.com
-    image: hyperledger/fabric-orderer
+    image: hyperledger/fabric-orderer:x86_64-1.1.0
     environment:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_car_default
       - ORDERER_GENERAL_LOGLEVEL=debug
