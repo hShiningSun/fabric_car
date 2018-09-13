@@ -10,9 +10,10 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *falali
-                    - *benchi
                     - *baoma
+                    - *benchi
+                    - *falali
+                   
                     # - *Org3
                     # - *Org4
                     # - *Org5
@@ -21,9 +22,9 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *falali
-                - *benchi
                 - *baoma
+                - *benchi
+                - *falali
                 # - *Org3
                 # - *Org4
                 # - *Org5
@@ -117,10 +118,10 @@ Orderer: &OrdererDefaults
 
     Kafka:
         Brokers:
-            - 192.168.56.109:9092
-            - 192.168.56.111:9092
-            - 192.168.56.110:9092
-            - 192.168.56.113:9092
+            - 39.105.37.84:9092
+            - 39.105.83.126:9092
+            - 47.94.169.105:9092
+            - 39.105.17.149:9092
 
     Organizations:
 
