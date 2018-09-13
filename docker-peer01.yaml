@@ -77,7 +77,7 @@ services:
         aliases:
           - aberic
     extra_hosts:
-     - "orderer.example.com:192.168.56.114"
+     - "orderer.example.com:172.17.184.16"
 
   cli:
     container_name: cli
@@ -105,5 +105,5 @@ services:
     depends_on:
       - peer0.org1.example.com
     extra_hosts:
-     - "orderer.example.com:192.168.56.114"
-     - "peer0.org1.example.com:192.168.56.115"
+     - "orderer.example.com:172.17.184.16"
+     - "peer0.org1.example.com:172.17.184.15"
