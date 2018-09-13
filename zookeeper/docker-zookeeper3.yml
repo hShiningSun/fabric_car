@@ -17,7 +17,7 @@ services:
   zookeeper3:
     container_name: zookeeper3
     hostname: zookeeper3
-    image: hyperledger/fabric-zookeeper
+    image: hyperledger/fabric-zookeeper:x86_64-0.4.6
     restart: always
     environment:
       # ========================================================================

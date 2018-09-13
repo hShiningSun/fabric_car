@@ -17,7 +17,7 @@ services:
   kafka3:
     container_name: kafka3
     hostname: kafka3
-    image: hyperledger/fabric-kafka
+    image: hyperledger/fabric-kafka:x86_64-0.4.6
     restart: always
     environment:
       # ========================================================================
