@@ -36,7 +36,7 @@ services:
     image: hyperledger/fabric-peer #:x86_64-1.1.0
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=72.17.184.15:7059  #:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:7059  #:5984
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_NETWORKID=fabric_car
@@ -78,7 +78,7 @@ services:
         aliases:
           - fabric_car
     extra_hosts:
-     - "orderer.example.com:172.17.184.16"
+     - "orderer.example.com:192.168.56.114"
 
   cli:
     container_name: cli
@@ -106,5 +106,5 @@ services:
     depends_on:
       - peer0.org1.example.com
     extra_hosts:
-     - "orderer.example.com:172.17.184.16"
-     - "peer0.org1.example.com:172.17.184.15"
+     - "orderer.example.com:192.168.56.114"
+     - "peer0.org1.example.com:192.168.56.115"
