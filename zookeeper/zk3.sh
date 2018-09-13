@@ -18,13 +18,8 @@ COMPOSE_FILE=docker-zookeeper3.yml
 
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
-echo "Option up / down / restart not mentioned"
 printHelp
 exit 1
-fi
-if [ -z "${CH_NAME}" ]; then
-echo "setting to default channel 'mychannel'"
-CH_NAME=mychannel
 fi
 }
 
