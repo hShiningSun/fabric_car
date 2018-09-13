@@ -35,7 +35,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_NETWORKID=aberic
@@ -78,7 +78,6 @@ services:
           - aberic
     extra_hosts:
      - "orderer.example.com:172.17.184.16"
-     - "couchdb:172.17.184.15"
 
   cli:
     container_name: cli
