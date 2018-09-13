@@ -35,7 +35,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_NETWORKID=aberic
@@ -87,9 +87,9 @@ services:
     environment:
       - GOPATH=/opt/gopath
       # GO语言默认使用纯GO的域名解析，因为这样一个阻塞的DNS请求只会消耗一个协程， 使 用cgo的
-      #方式则会阻塞一个系统线程, 只有某些特定条件下才会使用系统提供的cgo方式
-      #- GODEBUG=netdns=go
-      - GODEBUG=netdns=cgo
+      # 方式则会阻塞一个系统线程, 只有某些特定条件下才会使用系统提供的cgo方式
+      # 在阿里云服务器 默认的sgo，所以这里要改回来
+      - GODEBUG=netdns=go
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
@@ -112,4 +112,3 @@ services:
     extra_hosts:
      - "orderer.example.com:172.17.184.16"
      - "peer0.org1.example.com:172.17.184.15"
-     - "couchdb:172.17.184.15"
