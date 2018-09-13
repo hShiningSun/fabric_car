@@ -6,7 +6,6 @@ fi
 
 
 set -x
-output=`git status`
 output=`git add .`
 output=`git commit -m "${MESSAGE}"`
 git push origin yun
