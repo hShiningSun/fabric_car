@@ -9,7 +9,7 @@ services:
 
   couchdb:
     container_name: couchdb
-    image: hyperledger/fabric-couchdb:x86_64-0.4.7
+    image: hyperledger/fabric-couchdb  #:x86_64-0.4.7
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
@@ -17,7 +17,7 @@ services:
 
   ca:
     container_name: ca
-    image: hyperledger/fabric-ca #:x86_64-1.1.0
+    image: hyperledger/fabric-ca  #:x86_64-1.1.0
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca
@@ -106,4 +106,4 @@ services:
       - peer0.org1.example.com
     extra_hosts:
      - "orderer.example.com:172.17.184.16"
-     - "peer0.org1.example.com:172.17.184.15"
+     - "peer0.org1.example.com:59.110.136.102"
