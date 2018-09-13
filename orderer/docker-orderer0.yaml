@@ -34,7 +34,7 @@ services:
       - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
       - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
       - ORDERER_KAFKA_VERBOSE=true
-      - ORDERER_KAFKA_BROKERS=[192.168.56.109:9092,192.168.56.111:9092,192.168.56.110:9092,192.168.56.113:9092]
+      - ORDERER_KAFKA_BROKERS=[39.105.37.84:9092,39.105.83.126:9092,47.94.169.105:9092,39.105.17.149:9092]
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
@@ -48,7 +48,7 @@ services:
     ports:
       - 7050:7050
     extra_hosts:
-     - "kafka1:192.168.56.109"
-     - "kafka2:192.168.56.111"
-     - "kafka3:192.168.56.110"
-     - "kafka4:192.168.56.113"
+     - "kafka1:39.105.37.84"
+     - "kafka2:39.105.83.126"
+     - "kafka3:47.94.169.105"
+     - "kafka4:39.105.17.149"
