@@ -13,11 +13,9 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE1=docker-orderer.yaml
-COMPOSE_FILE2=docker-zxm.yaml
-COMPOSE_PEER0_ORG1=peer0-baoma.yaml
-COMPOSE_PEER0_ORG2=peer0-benchi.yaml
-COMPOSE_PEER0_ORG3=peer0-falali.yaml
+COMPOSE_PEER0_ORG1=peer0-baoma.yml
+COMPOSE_PEER0_ORG2=peer0-benchi.yml
+COMPOSE_PEER0_ORG3=peer0-falali.yml
 ORG1=baoma
 ORG2=benchi
 ORG3=falali
