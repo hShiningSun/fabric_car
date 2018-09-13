@@ -6,9 +6,9 @@ fi
 
 
 set -x
-time=`git status`
-time=`git add .`
-time=`git commit -m "${MESSAGE}"`
+output=`git status`
+output=`git add .`
+output=`git commit -m "${MESSAGE}"`
 git push origin yun
 set +x
 exit 0
