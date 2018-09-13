@@ -13,7 +13,7 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE=docker-zookeeper2.yaml
+COMPOSE_FILE=docker-zookeeper2.yml
 
 
 function validateArgs () {

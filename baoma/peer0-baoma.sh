@@ -13,7 +13,7 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE=peer0-baoma.yaml
+COMPOSE_FILE=peer0-baoma.yml
 
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
