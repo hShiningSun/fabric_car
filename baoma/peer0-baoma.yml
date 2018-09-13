@@ -47,10 +47,10 @@ services:
 
       - CORE_PEER_ID=peer0.baoma.car.com
       - CORE_PEER_NETWORKID=fabric_car
-      - CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.baoma.car.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.baoma.car.com:7051
+      - CORE_PEER_ADDRESS=59.110.136.102:7051
+      - CORE_PEER_CHAINCODEADDRESS=59.110.136.102:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=59.110.136.102:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=59.110.136.102:7051
       - CORE_PEER_LOCALMSPID=baomaMSP
 
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -105,8 +105,8 @@ services:
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.baoma.car.com:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.baoma.car.com:7052
+      - CORE_PEER_ADDRESS=59.110.136.102:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=59.110.136.102:7052
       - CORE_PEER_LOCALMSPID=baomaMSP
       - CORE_PEER_TLS_ENABLED=false
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/tls/server.crt
