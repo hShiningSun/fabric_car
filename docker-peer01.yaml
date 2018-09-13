@@ -36,7 +36,7 @@ services:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       # 在阿里云部署不能填写couchdb:5984 找不到，要填写IP地址 
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=172.17.184.15:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=59.110.136.102:5984
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_NETWORKID=aberic
@@ -78,8 +78,7 @@ services:
         aliases:
           - aberic
     extra_hosts:
-     - "orderer.example.com:172.17.184.16"
-     - "couchdb:172.17.184.15"
+     - "orderer.example.com:39.105.34.144"
 
   cli:
     container_name: cli
@@ -111,5 +110,5 @@ services:
     depends_on:
       - peer0.org1.example.com
     extra_hosts:
-     - "orderer.example.com:172.17.184.16"
-     - "peer0.org1.example.com:172.17.184.15"
+     - "orderer.example.com:39.105.34.144"
+     - "peer0.org1.example.com:59.110.136.102"
