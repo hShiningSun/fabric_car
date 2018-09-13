@@ -145,6 +145,11 @@ removeUnwantedImages
 rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config
 }
 
+function printHelp () {
+    echo "==============================================================="
+    echo "=============input up down perform=============================" 
+    echo "==============================================================="     
+}
 validateArgs
 
 #Create the network using docker compose
@@ -152,9 +157,9 @@ if [ "${UP_DOWN}" == "up" ]; then
 networkUp
 elif [ "${UP_DOWN}" == "down" ]; then ## Clear the network
 networkDown
-elif [ "${UP_DOWN}" == "restart" ]; then ## Restart the network
-networkDown
-networkUp
+# elif [ "${UP_DOWN}" == "restart" ]; then ## Restart the network
+# networkDown
+# networkUp
 else
  printHelp
 exit 1

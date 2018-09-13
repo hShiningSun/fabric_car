@@ -13,12 +13,7 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE1=docker-orderer.yaml
-COMPOSE_FILE2=docker-zxm.yaml
-COMPOSE_PEER0_ORG1=docker-peer0org1.yaml
-COMPOSE_PEER0_ORG2=docker-ly-org2.yaml
-ORG1=chenman
-ORG2=lixingxing
+COMPOSE_FILE=docker-zookeeper2.yaml
 
 
 function validateArgs () {
@@ -53,18 +48,23 @@ fi
 
 #启动
 function networkUp () {
-    networkDown
-    docker-compose -f docker-zookeeper2.yml up
+    docker-compose -f $COMPOSE_FILE up
 }
 
 #关闭
 function networkDown () {
-    docker-compose -f docker-zookeeper2.yml down
+    docker-compose -f $COMPOSE_FILE down
     clearContainers
-    ##Cleanup images
+    #Cleanup images
     removeUnwantedImages
 }
 
+
+function printHelp () {
+    echo "==============================================================="
+    echo "=============input up down restart perform=====================" 
+    echo "==============================================================="     
+}
 validateArgs
 
 #Create the network using docker compose

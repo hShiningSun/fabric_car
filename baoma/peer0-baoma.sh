@@ -15,11 +15,6 @@ IF_COUCHDB="$4"
 
 COMPOSE_FILE=peer0-baoma.yaml
 
-
-function printHelp (){
-echo "直接执行，没有花招"
-}
-
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
 echo "Option up / down / restart not mentioned"
@@ -52,7 +47,6 @@ fi
 
 #启动
 function networkUp () {
-    networkDown
     docker-compose -f $COMPOSE_FILE up -d
 }
 
@@ -64,6 +58,11 @@ function networkDown () {
     removeUnwantedImages
 }
 
+function printHelp () {
+    echo "==============================================================="
+    echo "=============input up down restart perform=====================" 
+    echo "==============================================================="     
+}
 validateArgs
 
 #Create the network using docker compose
