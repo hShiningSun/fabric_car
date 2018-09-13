@@ -86,7 +86,10 @@ services:
     tty: true
     environment:
       - GOPATH=/opt/gopath
-      - GODEBUG=netdns=go
+      # GO语言默认使用纯GO的域名解析，因为这样一个阻塞的DNS请求只会消耗一个协程， 使 用cgo的
+      #方式则会阻塞一个系统线程, 只有某些特定条件下才会使用系统提供的cgo方式
+      #- GODEBUG=netdns=go
+      - GODEBUG=netdns=cgo
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       # - CORE_LOGGING_LEVEL=ERROR
       - CORE_LOGGING_LEVEL=DEBUG
