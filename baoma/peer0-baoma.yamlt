@@ -23,10 +23,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e9ebcc3905c0602a262cc84ab16e4adbe4700fa4af4b42a7db6e7225b68b62ce_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e9ebcc3905c0602a262cc84ab16e4adbe4700fa4af4b42a7db6e7225b68b62ce_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.baoma.car.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
       - ../GenesisFile/crypto-config/peerOrganizations/baoma.car.com/ca/:/etc/hyperledger/fabric-ca-server-config
 
