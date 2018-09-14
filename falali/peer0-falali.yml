@@ -124,3 +124,8 @@ services:
      - "car1.car.com:192.168.56.114"
      - "car2.car.com:192.168.56.116"
      - "peer0.chunyuhui1.car.com:192.168.56.101"
+
+networks:
+  default:
+    external:
+      name: fabric_car_default

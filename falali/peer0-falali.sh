@@ -6,6 +6,9 @@
 #
 
 
+COMPOSE_FILE=peer0-falali.yml
+PROJECT_NAME=fabric_car
+
 UP_DOWN="$1"
 CH_NAME="$2"
 CLI_TIMEOUT="$3"
@@ -13,17 +16,12 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE=peer0-falali.yml
 
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
 echo "Option up / down / restart not mentioned"
 printHelp
 exit 1
-fi
-if [ -z "${CH_NAME}" ]; then
-echo "setting to default channel 'mychannel'"
-CH_NAME=mychannel
 fi
 }
 
@@ -47,6 +45,7 @@ fi
 
 #启动
 function networkUp () {
+    docker network create --driver bridge ${PROJECT_NAME}_default
     docker-compose -f $COMPOSE_FILE up -d
 }
 

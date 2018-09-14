@@ -38,7 +38,7 @@ services:
     image: hyperledger/fabric-peer
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=47.94.166.33:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=123456
 
@@ -125,3 +125,8 @@ services:
     #  - "car1.car.com:192.168.56.114"
     #  - "car2.car.com:192.168.56.116"
      - "peer0.benchi.car.com:47.94.166.33"
+
+networks:
+  default:
+    external:
+      name: fabric_car_default

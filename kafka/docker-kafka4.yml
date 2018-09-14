@@ -146,3 +146,8 @@ services:
      - "kafka2:39.105.83.126"
      - "kafka3:47.94.169.105"
      - "kafka4:39.105.17.149"
+
+networks:
+  default:
+    external:
+      name: fabric_car_default

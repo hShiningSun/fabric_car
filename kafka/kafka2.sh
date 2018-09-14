@@ -6,14 +6,16 @@
 #
 
 
+COMPOSE_FILE=docker-kafka2.yml
+PROJECT_NAME=fabric_car
+
+
 UP_DOWN="$1"
 CH_NAME="$2"
 CLI_TIMEOUT="$3"
 IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
-
-COMPOSE_FILE=docker-kafka2.yml
 
 
 
@@ -44,6 +46,7 @@ fi
 
 #启动
 function networkUp () {
+    docker network create --driver bridge ${PROJECT_NAME}_default
     docker-compose -f $COMPOSE_FILE up
 }
 
