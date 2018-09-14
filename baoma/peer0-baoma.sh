@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+COMPOSE_FILE=peer0-baoma.yml
+PROJECT_NAME=fabric_car
 
 UP_DOWN="$1"
 CH_NAME="$2"
@@ -13,18 +15,12 @@ IF_COUCHDB="$4"
 
 : ${CLI_TIMEOUT:="10000"}
 
-COMPOSE_FILE=peer0-baoma.yml
+
 
 function validateArgs () {
 if [ -z "${UP_DOWN}" ]; then
-echo "Option up / down / restart not mentioned"
 printHelp
 exit 1
-fi
-if [ -z "${CH_NAME}" ]; then
-echo "setting to default channel 'mychannel'"
-CH_NAME=mychannel
-fi
 }
 
 function clearContainers () {
@@ -47,6 +43,7 @@ fi
 
 #启动
 function networkUp () {
+    docker network create --driver bridge ${fabric_car}_default
     docker-compose -f $COMPOSE_FILE up -d
 }
 
