@@ -137,7 +137,7 @@ services:
 networks:
   baoma_net:
     # Use a custom driver
-    driver: bridge
+    driver: overlay
   # backend:
   #   # Use a custom driver which takes special options
   #   driver: bridge
