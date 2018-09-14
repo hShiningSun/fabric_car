@@ -22,6 +22,7 @@ services:
     container_name: ca
     image: hyperledger/fabric-ca
     environment:
+      - GODEBUG=netdns=go
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_TLS_ENABLED=false
@@ -37,6 +38,7 @@ services:
     container_name: peer0.benchi.car.com
     image: hyperledger/fabric-peer
     environment:
+      - GODEBUG=netdns=go
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
