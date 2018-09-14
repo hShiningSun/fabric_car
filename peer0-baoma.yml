@@ -69,11 +69,11 @@ services:
       - GOPATH=/opt/gopath
     volumes:
         - /var/run/:/host/var/run/
-        - ../GenesisFile/chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
-        - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
+        - ./GenesisFile/chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
        
-        - ../GenesisFile/crypto-config/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/msp:/etc/hyperledger/fabric/msp
-        - ../GenesisFile/crypto-config/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/tls:/etc/hyperledger/fabric/tls
+        - ./GenesisFile/crypto-config/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/msp:/etc/hyperledger/fabric/msp
+        - ./GenesisFile/crypto-config/peerOrganizations/baoma.car.com/peers/peer0.baoma.car.com/tls:/etc/hyperledger/fabric/tls
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -113,12 +113,12 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
         - /var/run/:/host/var/run/
-        - ../chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
-        - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - ../chaincode/go/:/opt/go/src/github.com/hyperledger/fabric/chaincode/go
+        - ./chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./chaincode/go/:/opt/go/src/github.com/hyperledger/fabric/chaincode/go
 
-        - ../GenesisFile/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ../GenesisFile/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - ./GenesisFile/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./GenesisFile/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - peer0.baoma.car.com
     extra_hosts:

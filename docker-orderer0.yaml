@@ -39,9 +39,9 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-    - ../GenesisFile/channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../GenesisFile/crypto-config/ordererOrganizations/car.com/orderers/car0.car.com/msp:/var/hyperledger/orderer/msp
-    - ../GenesisFile/crypto-config/ordererOrganizations/car.com/orderers/car0.car.com/tls/:/var/hyperledger/orderer/tls
+    - ./GenesisFile/channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ./GenesisFile/crypto-config/ordererOrganizations/car.com/orderers/car0.car.com/msp:/var/hyperledger/orderer/msp
+    - ./GenesisFile/crypto-config/ordererOrganizations/car.com/orderers/car0.car.com/tls/:/var/hyperledger/orderer/tls
     networks:
       default:
         aliases:
