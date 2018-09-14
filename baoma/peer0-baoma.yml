@@ -127,7 +127,7 @@ services:
     #  - "car2.car.com:192.168.56.116"
      - "peer0.baoma.car.com:59.110.136.102"
 
-networks:
-  default:
-    external:
-      name: baoma
+# networks:
+#   default:
+#     external:
+#       name: baoma
