@@ -22,6 +22,7 @@ if [ -z "${UP_DOWN}" ]; then
 printHelp
 exit 1
 }
+fi
 
 function clearContainers () {
 CONTAINER_IDS=$(docker ps -aq)
