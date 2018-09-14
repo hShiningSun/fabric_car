@@ -45,7 +45,7 @@ fi
 
 #启动
 function networkUp () {
-    docker network create --driver bridge ${fabric_car}_default
+    docker network create --driver bridge ${PROJECT_NAME}_default
     docker-compose -f $COMPOSE_FILE up -d
 }
 
