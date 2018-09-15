@@ -1,6 +1,6 @@
 
 # import env
-. addorg/env.sh
+. env.sh
 
 function getOriginConfigJson () {
   echo "====== fetch channel new config and save the config_block.pb ======"
@@ -25,8 +25,11 @@ function createModifyConfigJson () {
   # config.json + genesis-${ORG_NAME}.json = modified_config.json
   echo "===== write new channel config json modified_config.json ======"
   set -x
-  jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"'$ORG_MSPID'":.[1]}}}}}' $ORIGINAL_CONFIG_JSON ./channel-artifacts/${ORG_NAME}.json > $MODIFYED_CONFIG_JSON
+  jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"'$ORG_MSPID'":.[1]}}}}}' $ORIGINAL_CONFIG_JSON $GENESIS_CREATE_ORG_JSON > $MODIFYED_CONFIG_JSON
   set +x
+
+  # 频道升级的情况 ./scripts/capabilities.json 这个应该是 创世区块生成的文件
+  # jq -s '.[0] * {"channel_group":{"groups":{"Application": {"values": {"Capabilities": .[1]}}}}}' config.json ./scripts/capabilities.json > modified_config.json
 }
 
 function createConfigUpdate () {
@@ -58,7 +61,7 @@ function signConfigtx () {
 
 
 
-unction validateArgs () {
+function validateArgs () {
 if [ -z "${ORDERER}" ]; then
 echo "====== env.sh please set ORDERER value ======"
 exit 1
@@ -112,4 +115,11 @@ createConfigUpdate
 
 # 本节点对这个更新事务 进行签名
 signConfigtx
+if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Unable to sign configtx"
+    exit 1
+else 
+    printHelp
+fi
+exit 0
 

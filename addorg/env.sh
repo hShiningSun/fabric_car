@@ -12,6 +12,9 @@ ORG_NAME=
 #例如 ORG_MSPID=baomaMSP
 ORG_MSPID=
 
+# 创世纪 生成的新增json组织路径
+GENESIS_CREATE_ORG_JSON=../GenesisFile/channel-artifacts/${ORG_NAME}.json
+
 
 
 #====================== 下面配置一般固定的不需要更改 ===========================
