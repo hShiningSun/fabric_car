@@ -1,0 +1,74 @@
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+certificateAuthorities:
+  ca.chenman.car.com:
+    url: https://ca.chenman.car.com:7054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org1.car.com
+    tlsCACerts:
+      # Comma-Separated list of paths
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chenman.car.com/tlsca/tlsca.chenman.car.com-cert.pem
+      # Client key and cert for SSL handshake with Fabric CA
+      # client:
+      #   key:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+      #   cert:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca.chenman.car.com
+  ca.lixingxing.car.com:
+    url: https://ca.lixingxing.car.com:7054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org2.car.com
+    tlsCACerts:
+      # Comma-Separated list of paths
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/lixingxing.car.com/tlsca/tlsca.lixingxing.car.com-cert.pem
+      # Client key and cert for SSL handshake with Fabric CA
+      # client:
+      #   key:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+      #   cert:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+     # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca.lixingxing.car.com
+
+
+  # ca.chunyuhui.car.com:
+  #   url: https://ca.chunyuhui.car.com:7054
+  #   # [Optional] The optional server name for target override
+  #   #grpcOptions:
+  #   #  ssl-target-name-override: ca.org2.car.com
+  #   tlsCACerts:
+  #     # Comma-Separated list of paths
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chunyuhui.car.com/tlsca/tlsca.chunyuhui.car.com-cert.pem
+  #     # Client key and cert for SSL handshake with Fabric CA
+  #     # client:
+  #     #   key:
+  #     #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+  #     #   cert:
+  #     #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+  #    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+  #    # needed to enroll and invoke new users.
+  #   registrar:
+  #     enrollId: admin
+  #     enrollSecret: adminpw
+  #   # [Optional] The optional name of the CA.
+  #   caName: ca.chunyuhui.car.com

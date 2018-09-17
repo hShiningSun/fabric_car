@@ -1,0 +1,59 @@
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  # _default:
+  #   # common orderer config items between all the orderers in  config
+  #   # these are standard properties defined by the gRPC library
+  #   # they will be passed in as-is to gRPC client constructor
+  #   grpcOptions:
+  #     # These parameters should be set in coordination with the keepalive policy on the server,
+  #     # as incompatible settings can result in closing of connection.
+  #     # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+  #     keep-alive-time: 0s
+  #     keep-alive-timeout: 20s
+  #     keep-alive-permit: false
+  #     fail-fast: false
+  #     # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+  #     allow-insecure: false
+
+  hyc0.car.com:
+    url: grpc://localhost:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+       ssl-target-name-override: hyc0.car.com
+      # # These parameters should be set in coordination with the keepalive policy on the server,
+      # # as incompatible settings can result in closing of connection.
+      # # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+       keep-alive-time: 0s
+       keep-alive-timeout: 20s
+       keep-alive-permit: false
+       fail-fast: false
+      # # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+       allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem
+  hyc1.car.com:
+    url: grpc://192.168.56.114:7050
+
+    grpcOptions:
+      ssl-target-name-override: hyc1.car.com
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem
+  hyc2.car.com:
+    url: grpc://192.168.56.116:7050
+
+    grpcOptions:
+      ssl-target-name-override: hyc2.car.com
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem

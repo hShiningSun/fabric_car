@@ -1,0 +1,116 @@
+version: 0.0.1
+
+#
+# The client section used by GO SDK.
+# 这是哪一个 组织的客户端，请正确填写
+client:
+
+  # Which organization does this application instance belong to? The value must be the name of an org
+  # defined under "organizations"
+  organization: chenman
+
+  logging:
+    level: info
+
+  orderer:
+    timeout:
+     connection: 5s
+     response: 180s
+  # Global configuration for peer, event service and orderer timeouts
+  # if this this section is omitted, then default values will be used (same values as below)
+  peer:
+    timeout:
+      connection: 10s
+      response: 180s
+      discovery:
+        # Expiry period for discovery service greylist filter
+        # The channel client will greylist peers that are found to be offline
+        # to prevent re-selecting them in subsequent retries.
+        # This interval will define how long a peer is greylisted
+        # 发现灰名单
+        greylistExpiry: 10s
+  eventService:
+
+    # blockHeightLagThreshold sets the block height lag threshold. This value is used for choosing a peer
+    # to connect to. If a peer is lagging behind the most up-to-date peer by more than the given number of
+    # blocks then it will be excluded from selection.
+    # If set to 0 then only the most up-to-date peers are considered.
+    # If set to -1 then all peers (regardless of block height) are considered for selection.
+    # Default: 5
+    blockHeightLagThreshold: 2
+
+    # reconnectBlockHeightLagThreshold - if >0 then the event client will disconnect from the peer if the peer's
+    # block height falls behind the specified number of blocks and will reconnect to a better performing peer.
+    # If set to 0 then this feature is disabled.
+    # Default: 0 (disabled)
+    # NOTES:
+    #   - This feature should only be enabled when using deliver events, otherwise events may be lost during reconnect
+    #   - Setting this value too low may cause the event client to disconnect/reconnect too frequently, thereby
+    #     affecting performance.
+    reconnectBlockHeightLagThreshold: 2
+
+    # blockHeightMonitorPeriod is the period in which the connected peer's block height is monitored. Note that this
+    # value is only relevant if reconnectBlockHeightLagThreshold >0.
+    # Default: 5s
+    blockHeightMonitorPeriod: 3s
+
+    # the below timeouts are commented out to use the default values that are found in
+    # "pkg/fab/endpointconfig.go"
+    # the client is free to override the default values by uncommenting and resetting
+    # the values as they see fit in their config file
+  #  timeout:
+  #    connection: 15s
+  #    registrationResponse: 15s
+
+#  global:
+#    timeout:
+#      query: 180s
+#      execute: 180s
+#      resmgmt: 180s
+#    cache:
+#      connectionIdle: 30s
+#      eventServiceIdle: 2m
+#      channelConfig: 30m
+#      channelMembership: 30s
+#      discovery: 10s
+#      selection: 10m
+
+  # Root of the MSP directories with keys and certs.
+  cryptoconfig:
+    path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config
+
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
+  # are implementation specific
+  credentialStore:
+    # [Optional]. Used by user store. Not needed if all credentials are embedded in configuration
+    # and enrollments are performed elswhere.
+    path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config #"/tmp/state-store"
+
+    # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
+    # requiring a key store. PKCS#11 based implementations does not.
+    cryptoStore:
+      # Specific to the underlying KeyValueStore that backs the crypto key store.
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config #/tmp/msp
+
+   # BCCSP config for the client. Used by GO SDK.
+  BCCSP:
+    security:
+     enabled: true
+     default:
+      provider: "SW"
+     hashAlgorithm: "SHA2"
+     softVerify: true
+     level: 256
+
+  # tlsCerts:
+  #   # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
+  #   systemCertPool: true
+
+  #   # [Optional]. Client key and cert for TLS handshake with peers and orderers
+  #   client:
+  #     key:
+  #       path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+  #     cert:
+  #       path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+#

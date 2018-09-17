@@ -1,0 +1,92 @@
+# EntityMatchers enable substitution of network hostnames with static configurations
+ # so that properties can be mapped. Regex can be used for this purpose
+# UrlSubstitutionExp can be empty which means the same network hostname will be used
+# UrlSubstitutionExp can be given same as mapped peer url, so that mapped peer url can be used
+# UrlSubstitutionExp can have golang regex matchers like $1.local.example.$2:$3 for pattern
+ # like peer0.org1.car.com:1234 which converts peer0.org1.car.com to peer0.org1.local.car.com:1234
+# sslTargetOverrideUrlSubstitutionExp follow in the same lines as
+ # SubstitutionExp for the fields gprcOptions.ssl-target-name-override respectively
+# In any case mappedHost's config will be used, so mapped host cannot be empty, if entityMatchers are used
+#entityMatchers:
+entityMatchers:
+  peer:
+
+    - pattern: (\w+).chenman.car.com:(\d+)
+      urlSubstitutionExp: 192.168.56.115:7051
+      eventUrlSubstitutionExp: 192.168.56.115:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.chenman.car.com
+      mappedHost: peer0.chenman.car.com
+
+
+    - pattern: (\w+).chenman.car.com:(\d+)
+      urlSubstitutionExp: 192.168.56.112:7051
+      eventUrlSubstitutionExp: 192.168.56.112:7053
+      sslTargetOverrideUrlSubstitutionExp: peer1.chenman.car.com
+      mappedHost: peer1.chenman.car.com
+
+
+    - pattern: (\w+).lixingxing.car.com:(\d+)
+      urlSubstitutionExp: 192.168.56.117:7051
+      eventUrlSubstitutionExp: 192.168.56.117:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.lixingxing.car.com
+      mappedHost: peer0.lixingxing.car.com
+
+
+    # - pattern: (\w+).chunyuhui.car.com:(\d+)
+    #   urlSubstitutionExp: 192.168.56.101:7051
+    #   eventUrlSubstitutionExp: 192.168.56.101:7053
+    #   sslTargetOverrideUrlSubstitutionExp: peer0.chunyuhui.car.com
+    #   mappedHost: peer0.chunyuhui.car.com
+
+
+    # - pattern: (\w+).lixingxing.car.com:(\d+)
+    #   urlSubstitutionExp: 192.168.56.112:7051
+    #   sslTargetOverrideUrlSubstitutionExp: peer1.chenman.car.com
+    #   mappedHost: peer1.chenman.car.com
+   
+
+  orderer:
+
+   
+    - pattern: (\w+).example.(\w+)
+      urlSubstitutionExp: grpc://localhost:7050
+      sslTargetOverrideUrlSubstitutionExp: hyc0.car.com
+      mappedHost: hyc0.car.com
+
+    - pattern: (\w+).example.(\w+):(\d+)
+      urlSubstitutionExp: localhost:7050
+      sslTargetOverrideUrlSubstitutionExp: hyc0.car.com
+      mappedHost: hyc0.car.com
+
+
+    - pattern:  (\w+).example.(\w+)
+      urlSubstitutionExp: grpc://192.168.56.114:7050
+      sslTargetOverrideUrlSubstitutionExp: hyc1.car.com
+      mappedHost: hyc1.car.com
+
+    - pattern:  (\w+).example.(\w+)
+      urlSubstitutionExp: grpc://192.168.56.116:7050
+      sslTargetOverrideUrlSubstitutionExp: hyc2.car.com
+      mappedHost: hyc2.car.com
+
+
+
+      
+
+    
+  certificateAuthority:
+    - pattern: (\w+).chenman.example.(\w+)
+      urlSubstitutionExp: https://192.168.56.115:7054
+      sslTargetOverrideUrlSubstitutionExp: ca.chenman.car.com
+      mappedHost: ca.chenman.car.com
+
+    - pattern: (\w+).lixingxing.example.(\w+)
+      urlSubstitutionExp: https://192.168.56.117:7054
+      sslTargetOverrideUrlSubstitutionExp: ca.lixingxing.car.com
+      mappedHost: ca.lixingxing.car.com
+
+    # - pattern: (\w+).chunyuhui.example.(\w+)
+    #   urlSubstitutionExp: https://192.168.56.101:7054
+    #   sslTargetOverrideUrlSubstitutionExp: ca.chunyuhui.car.com
+    #   mappedHost: ca.chunyuhui.car.com
+      

@@ -35,6 +35,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	var Aval, Bval int                    // Asset holdings
 	var err error
 
+	if len(args) == 0 {
+		return shim.Success([]byte("no change value upgrade chaincode Successful"))
+	}
+
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}

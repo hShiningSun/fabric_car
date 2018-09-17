@@ -28,9 +28,9 @@ signConfigtxAsPeerOrg 1 ${ORG_ADD_NAME}_update_in_envelope.pb
 
 
 echo "将事务${ORG_ADD_NAME}_update_in_envelope.pb 复制 出来"
-echo "=== docker cp hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/${ORG_ADD_NAME}_update_in_envelope.pb /home/car/fabric_kafka/${ORG_ADD_NAME}-artifacts/${ORG_ADD_NAME}_update_in_envelope.pb ==="
+echo "=== docker cp hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/${ORG_ADD_NAME}_update_in_envelope.pb /home/car/fabric_car/${ORG_ADD_NAME}-artifacts/${ORG_ADD_NAME}_update_in_envelope.pb ==="
 echo "接下来 该第二个背书节点 来签署了"
 echo "=== 将事务${ORG_ADD_NAME}_update_in_envelope.pb 复制 进去 ==="
-echo "=== docker cp /home/car/fabric_kafka/{ORG_ADD_NAME}-artifacts/{ORG_ADD_NAME}_update_in_envelope.pb hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/{ORG_ADD_NAME}_update_in_envelope.pb ==="
+echo "=== docker cp /home/car/fabric_car/{ORG_ADD_NAME}-artifacts/{ORG_ADD_NAME}_update_in_envelope.pb hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/{ORG_ADD_NAME}_update_in_envelope.pb ==="
 
 echo "=== 复制好了 就下一步骤 在第二个背书节点  执行 add1.sh up3 "

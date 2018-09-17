@@ -1,0 +1,81 @@
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration. 重要节点 添加时间监听地址
+#
+peers:
+  # _default:
+  #   #common grpc options between all the peers
+  #   grpcOptions:
+  #     # These parameters should be set in coordination with the keepalive policy on the server,
+  #     # as incompatible settings can result in closing of connection.
+  #     # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+  #     keep-alive-time: 0s
+  #     keep-alive-timeout: 20s
+  #     keep-alive-permit: false
+  #     fail-fast: false
+  #     # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+  #     allow-insecure: false
+
+  peer0.chenman.car.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://192.168.56.115:7051
+    eventUrl: grpc://192.168.56.115:7053
+
+    grpcOptions:
+     ssl-target-name-override: peer0.chenman.car.com
+    #  keep-alive-time: 0s
+    #   keep-alive-timeout: 20s
+    #   keep-alive-permit: false
+    #   fail-fast: false
+    #   allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chenman.car.com/tlsca/tlsca.chenman.car.com-cert.pem
+
+  peer1.chenman.car.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://192.168.56.112:7051
+    eventUrl: grpc://192.168.56.112:7053
+    grpcOptions:
+     ssl-target-name-override: peer1.chenman.car.com
+    #  keep-alive-time: 0s
+    #   keep-alive-timeout: 20s
+    #   keep-alive-permit: false
+    #   fail-fast: false
+    #   allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chenman.car.com/tlsca/tlsca.chenman.car.com-cert.pem
+
+  peer0.lixingxing.car.com:
+    url: grpc://192.168.56.117:7051
+    eventUrl: grpc://192.168.56.117:7053
+    grpcOptions:
+     ssl-target-name-override: peer0.lixingxing.car.com
+    #  keep-alive-time: 0s
+    #   keep-alive-timeout: 20s
+    #   keep-alive-permit: false
+    #   fail-fast: false
+    #   allow-insecure: false
+
+    tlsCACerts:
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/lixingxing.car.com/tlsca/tlsca.lixingxing.car.com-cert.pem
+
+  # peer0.chunyuhui.car.com:
+  #   # this URL is used to send endorsement and query requests
+  #   url: grpc://192.168.56.101:7051
+  #   eventUrl: grpc://192.168.56.101:7053
+
+  #   grpcOptions:
+  #    ssl-target-name-override: peer0.chunyuhui.car.com
+  #   #  keep-alive-time: 0s
+  #   #   keep-alive-timeout: 20s
+  #   #   keep-alive-permit: false
+  #   #   fail-fast: false
+  #   #   allow-insecure: false
+
+  #   tlsCACerts:
+  #     # Certificate location absolute path
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chunyuhui.car.com/tlsca/tlsca.chunyuhui.car.com-cert.pem

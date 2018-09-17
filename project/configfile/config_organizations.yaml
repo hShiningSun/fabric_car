@@ -1,0 +1,71 @@
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  chenman:
+    mspid: chenmanMSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  peerOrganizations/chenman.car.com/users/Admin@chenman.car.com/msp
+
+    peers:
+      - peer0.chenman.car.com
+      - peer1.chenman.car.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    certificateAuthorities:
+      - ca.chenman.car.com
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  lixingxing:
+    mspid: lixingxingMSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  peerOrganizations/lixingxing.car.com/users/Admin@lixingxing.car.com/msp
+
+    peers:
+      - peer0.lixingxing.car.com
+      - peer1.lixingxing.car.com
+      # - ly1314.lixingxing.car.com
+      # - xx.lixingxing.car.com
+      # - mm.lixingxing.car.com
+
+    certificateAuthorities:
+      - ca.lixingxing.car.com
+
+
+  # chunyuhui:
+  #   mspid: chunyuhuiMSP
+
+  #   # This org's MSP store (absolute path or relative to client.cryptoconfig)
+  #   cryptoPath:  peerOrganizations/chunyuhui.car.com/users/Admin@chunyuhui.car.com/msp
+
+  #   peers:
+  #     - peer0.chunyuhui.car.com
+  #     - peer1.chunyuhui.car.com
+  #     # - ly1314.lixingxing.car.com
+  #     # - xx.lixingxing.car.com
+  #     # - mm.lixingxing.car.com
+
+  #   certificateAuthorities:
+  #     - ca.chunyuhui.car.com
+
+  
+
+  # Orderer Org name
+  ordererorg:
+      # Membership Service Provider ID for this organization
+      mspID: hycMSP
+
+      # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
+      cryptoPath: ordererOrganizations/car.com/users/Admin@car.com/msp
+

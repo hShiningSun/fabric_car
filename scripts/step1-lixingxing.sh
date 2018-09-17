@@ -60,7 +60,7 @@ CC_SRC_PATH="github.com/chaincode/go/chaincode_example02"
 #
 #
 #echo "将{ORG_ADD_NAME}_update_in_envelope.pb 复制出去，让第二台机子能够访问到"
-#docker cp hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/{ORG_ADD_NAME}_update_in_envelope.pb /home/car/fabric_kafka/{ORG_ADD_NAME}-artifacts/{ORG_ADD_NAME}_update_in_envelope.pb
+#docker cp hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/{ORG_ADD_NAME}_update_in_envelope.pb /home/car/fabric_car/{ORG_ADD_NAME}-artifacts/{ORG_ADD_NAME}_update_in_envelope.pb
 #
 #echo
 #echo "========= Submitting transaction from a different peer (peer0.org2) which also signs it ========= "
@@ -68,7 +68,7 @@ CC_SRC_PATH="github.com/chaincode/go/chaincode_example02"
 #echo
 
 #echo "将{ORG_ADD_NAME}_update_in_envelope.pb 复制过来，让第二台机子能够访问到"
-#docker cp /home/car/fabric_kafka/chunyuhui-artifacts/chunyuhui_update_in_envelope.pb hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/chunyuhui_update_in_envelope.pb
+#docker cp /home/car/fabric_car/chunyuhui-artifacts/chunyuhui_update_in_envelope.pb hostname:/opt/gopath/src/github.com/hyperledger/fabric/peer/chunyuhui_update_in_envelope.pb
 
 setGlobals 0 2
 set -x

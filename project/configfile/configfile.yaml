@@ -1,0 +1,627 @@
+#
+# Copyright SecureKey Technologies Inc. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+
+
+#
+# Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
+#
+version: 0.0.1
+
+#
+# The client section used by GO SDK.
+# 这是哪一个 组织的客户端，请正确填写
+client:
+
+  # Which organization does this application instance belong to? The value must be the name of an org
+  # defined under "organizations"
+  organization: benchi
+
+  logging:
+    level: info
+
+  orderer:
+    timeout:
+     connection: 5s
+     response: 180s
+  # Global configuration for peer, event service and orderer timeouts
+  # if this this section is omitted, then default values will be used (same values as below)
+  peer:
+    timeout:
+      connection: 10s
+      response: 180s
+      discovery:
+        # Expiry period for discovery service greylist filter
+        # The channel client will greylist peers that are found to be offline
+        # to prevent re-selecting them in subsequent retries.
+        # This interval will define how long a peer is greylisted
+        # 发现灰名单
+        greylistExpiry: 10s
+  eventService:
+
+    # blockHeightLagThreshold sets the block height lag threshold. This value is used for choosing a peer
+    # to connect to. If a peer is lagging behind the most up-to-date peer by more than the given number of
+    # blocks then it will be excluded from selection.
+    # If set to 0 then only the most up-to-date peers are considered.
+    # If set to -1 then all peers (regardless of block height) are considered for selection.
+    # Default: 5
+    blockHeightLagThreshold: 2
+
+    # reconnectBlockHeightLagThreshold - if >0 then the event client will disconnect from the peer if the peer's
+    # block height falls behind the specified number of blocks and will reconnect to a better performing peer.
+    # If set to 0 then this feature is disabled.
+    # Default: 0 (disabled)
+    # NOTES:
+    #   - This feature should only be enabled when using deliver events, otherwise events may be lost during reconnect
+    #   - Setting this value too low may cause the event client to disconnect/reconnect too frequently, thereby
+    #     affecting performance.
+    reconnectBlockHeightLagThreshold: 2
+
+    # blockHeightMonitorPeriod is the period in which the connected peer's block height is monitored. Note that this
+    # value is only relevant if reconnectBlockHeightLagThreshold >0.
+    # Default: 5s
+    blockHeightMonitorPeriod: 3s
+
+    # the below timeouts are commented out to use the default values that are found in
+    # "pkg/fab/endpointconfig.go"
+    # the client is free to override the default values by uncommenting and resetting
+    # the values as they see fit in their config file
+  #  timeout:
+  #    connection: 15s
+  #    registrationResponse: 15s
+
+#  global:
+#    timeout:
+#      query: 180s
+#      execute: 180s
+#      resmgmt: 180s
+#    cache:
+#      connectionIdle: 30s
+#      eventServiceIdle: 2m
+#      channelConfig: 30m
+#      channelMembership: 30s
+#      discovery: 10s
+#      selection: 10m
+
+  # Root of the MSP directories with keys and certs.
+  cryptoconfig:
+    path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config
+
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
+  # are implementation specific
+  credentialStore:
+    # [Optional]. Used by user store. Not needed if all credentials are embedded in configuration
+    # and enrollments are performed elswhere.
+    path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config #"/tmp/state-store"
+
+    # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
+    # requiring a key store. PKCS#11 based implementations does not.
+    cryptoStore:
+      # Specific to the underlying KeyValueStore that backs the crypto key store.
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config #/tmp/msp
+
+   # BCCSP config for the client. Used by GO SDK.
+  BCCSP:
+    security:
+     enabled: true
+     default:
+      provider: "SW"
+     hashAlgorithm: "SHA2"
+     softVerify: true
+     level: 256
+
+  # tlsCerts:
+  #   # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
+  #   systemCertPool: true
+
+  #   # [Optional]. Client key and cert for TLS handshake with peers and orderers
+  #   client:
+  #     key:
+  #       path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+  #     cert:
+  #       path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+#
+channels:
+
+  # Default channel is used if channel configuration is missing or if defined channel configuration is missing info
+  # If channel doesn't define peers then peers from default channel will be used
+  # If channel doesn't define orderes then orderes from default channel will be used
+  # If channel doesn't define policies then policies from default channel will be used. 
+  # Also, if channel defines policies and some policy info is missing than that missing info will be filled from default channel.
+  _default:
+
+    # [Optional]. list of peers from participating orgs
+    peers:
+      peer0.baoma.car.com:
+        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
+        # have the chaincode installed. The app can also use this property to decide which peers
+        # to send the chaincode install request. Default: true
+        endorsingPeer: true
+
+        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
+        # installed. The app can also use this property to decide which peers to send the
+        # chaincode install request. Default: true
+        chaincodeQuery: true
+
+        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
+        # queryBlock(), queryTransaction(), etc. Default: true
+        ledgerQuery: true
+
+        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
+        # produce events but the app typically only needs to connect to one to listen to events.
+        # Default: true
+        eventSource: true
+
+    # [Optional]. The application can use these options to perform channel operations like retrieving channel
+    # config etc.
+    policies:
+      #[Optional] options for retrieving discovery info
+      discovery:
+        #[Optional] discovery info will be retrieved for these number of random targets
+        maxTargets: 2
+        #[Optional] retry options for retriving discovery info
+        retryOpts:
+          #[Optional] number of retry attempts
+          attempts: 4
+          #[Optional] the back off interval for the first retry attempt
+          initialBackoff: 500ms
+          #[Optional] the maximum back off interval for any retry attempt
+          maxBackoff: 5s
+          #[Optional] he factor by which the initial back off period is exponentially incremented
+          backoffFactor: 2.0
+      #[Optional] options for retrieving channel configuration blocks
+      queryChannelConfig:
+        #[Optional] min number of success responses (from targets/peers)
+        minResponses: 1
+        #[Optional] channel config will be retrieved for these number of random targets
+        maxTargets: 1
+        #[Optional] retry options for query config block
+        retryOpts:
+          #[Optional] number of retry attempts
+          attempts: 5
+          #[Optional] the back off interval for the first retry attempt
+          initialBackoff: 500ms
+          #[Optional] the maximum back off interval for any retry attempt
+          maxBackoff: 5s
+          #[Optional] he factor by which the initial back off period is exponentially incremented
+          backoffFactor: 2.0
+
+  # Mychannel overrides initialBackoff for discovery
+  mychannel:
+    policies:
+      discovery:
+        retryOpts:
+          #[Required for override] number of retry attempts
+          attempts: 4
+          initialBackoff: 1s
+
+  mychannel:
+
+    # orderers:
+    #  - hyc0.car.com
+    #  - hyc1.car.com
+    #  - hyc2.car.com 
+    peers:
+      peer0.baoma.car.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.baoma.car.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.benchi.car.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.benchi.car.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      # peer0.chunyuhui.car.com:
+      #   endorsingPeer: true
+      #   chaincodeQuery: true
+      #   ledgerQuery: true
+      #   eventSource: true
+      # peer1.chunyuhui.car.com:
+      #   endorsingPeer: true
+      #   chaincodeQuery: true
+      #   ledgerQuery: true
+      #   eventSource: true
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  baoma:
+    mspid: baomaMSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  peerOrganizations/baoma.car.com/users/Admin@baoma.car.com/msp
+
+    peers:
+      - peer0.baoma.car.com
+      - peer1.baoma.car.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    certificateAuthorities:
+      - ca.baoma.car.com
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  benchi:
+    mspid: benchiMSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  peerOrganizations/benchi.car.com/users/Admin@benchi.car.com/msp
+
+    peers:
+      - peer0.benchi.car.com
+      - peer1.benchi.car.com
+      # - ly1314.benchi.car.com
+      # - xx.benchi.car.com
+      # - mm.benchi.car.com
+
+    certificateAuthorities:
+      - ca.benchi.car.com
+
+
+  # chunyuhui:
+  #   mspid: chunyuhuiMSP
+
+  #   # This org's MSP store (absolute path or relative to client.cryptoconfig)
+  #   cryptoPath:  peerOrganizations/chunyuhui.car.com/users/Admin@chunyuhui.car.com/msp
+
+  #   peers:
+  #     - peer0.chunyuhui.car.com
+  #     - peer1.chunyuhui.car.com
+  #     # - ly1314.benchi.car.com
+  #     # - xx.benchi.car.com
+  #     # - mm.benchi.car.com
+
+  #   certificateAuthorities:
+  #     - ca.chunyuhui.car.com
+
+  
+
+  # Orderer Org name
+  ordererorg:
+      # Membership Service Provider ID for this organization
+      mspID: carMSP
+
+      # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
+      cryptoPath: ordererOrganizations/car.com/users/Admin@car.com/msp
+
+
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  # _default:
+  #   # common orderer config items between all the orderers in  config
+  #   # these are standard properties defined by the gRPC library
+  #   # they will be passed in as-is to gRPC client constructor
+  #   grpcOptions:
+  #     # These parameters should be set in coordination with the keepalive policy on the server,
+  #     # as incompatible settings can result in closing of connection.
+  #     # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+  #     keep-alive-time: 0s
+  #     keep-alive-timeout: 20s
+  #     keep-alive-permit: false
+  #     fail-fast: false
+  #     # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+  #     allow-insecure: false
+
+  car0.car.com:
+    url: grpc://39.105.34.144:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+       ssl-target-name-override: hyc0.car.com
+      # # These parameters should be set in coordination with the keepalive policy on the server,
+      # # as incompatible settings can result in closing of connection.
+      # # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+       keep-alive-time: 0s
+       keep-alive-timeout: 20s
+       keep-alive-permit: false
+       fail-fast: false
+      # # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+       allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem
+  # hyc1.car.com:
+  #   url: grpc://192.168.56.114:7050
+
+  #   grpcOptions:
+  #     ssl-target-name-override: hyc1.car.com
+
+  #   tlsCACerts:
+  #     # Certificate location absolute path
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem
+  # hyc2.car.com:
+  #   url: grpc://192.168.56.116:7050
+
+  #   grpcOptions:
+  #     ssl-target-name-override: hyc2.car.com
+
+  #   tlsCACerts:
+  #     # Certificate location absolute path
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/ordererOrganizations/car.com/tlsca/tlsca.car.com-cert.pem
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration. 重要节点 添加时间监听地址
+#
+peers:
+  # _default:
+  #   #common grpc options between all the peers
+  #   grpcOptions:
+  #     # These parameters should be set in coordination with the keepalive policy on the server,
+  #     # as incompatible settings can result in closing of connection.
+  #     # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+  #     keep-alive-time: 0s
+  #     keep-alive-timeout: 20s
+  #     keep-alive-permit: false
+  #     fail-fast: false
+  #     # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+  #     allow-insecure: false
+
+  peer0.baoma.car.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://59.110.136.102:7051
+    eventUrl: grpc://59.110.136.102:7053
+
+    grpcOptions:
+     ssl-target-name-override: peer0.baoma.car.com
+    #  keep-alive-time: 0s
+    #   keep-alive-timeout: 20s
+    #   keep-alive-permit: false
+    #   fail-fast: false
+    #   allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/baoma.car.com/tlsca/tlsca.baoma.car.com-cert.pem
+
+  # peer1.baoma.car.com:
+  #   # this URL is used to send endorsement and query requests
+  #   url: grpc://192.168.56.112:7051
+  #   eventUrl: grpc://192.168.56.112:7053
+  #   grpcOptions:
+  #    ssl-target-name-override: peer1.baoma.car.com
+  #   #  keep-alive-time: 0s
+  #   #   keep-alive-timeout: 20s
+  #   #   keep-alive-permit: false
+  #   #   fail-fast: false
+  #   #   allow-insecure: false
+
+  #   tlsCACerts:
+  #     # Certificate location absolute path
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/baoma.car.com/tlsca/tlsca.baoma.car.com-cert.pem
+
+  peer0.benchi.car.com:
+    url: grpc://47.94.166.33:7051
+    eventUrl: grpc://47.94.166.33:7053
+    grpcOptions:
+     ssl-target-name-override: peer0.benchi.car.com
+    #  keep-alive-time: 0s
+    #   keep-alive-timeout: 20s
+    #   keep-alive-permit: false
+    #   fail-fast: false
+    #   allow-insecure: false
+
+    tlsCACerts:
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/benchi.car.com/tlsca/tlsca.benchi.car.com-cert.pem
+
+  # peer0.chunyuhui.car.com:
+  #   # this URL is used to send endorsement and query requests
+  #   url: grpc://192.168.56.101:7051
+  #   eventUrl: grpc://192.168.56.101:7053
+
+  #   grpcOptions:
+  #    ssl-target-name-override: peer0.chunyuhui.car.com
+  #   #  keep-alive-time: 0s
+  #   #   keep-alive-timeout: 20s
+  #   #   keep-alive-permit: false
+  #   #   fail-fast: false
+  #   #   allow-insecure: false
+
+  #   tlsCACerts:
+  #     # Certificate location absolute path
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chunyuhui.car.com/tlsca/tlsca.chunyuhui.car.com-cert.pem
+
+
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+certificateAuthorities:
+  ca.baoma.car.com:
+    url: https://ca.baoma.car.com:7054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org1.car.com
+    tlsCACerts:
+      # Comma-Separated list of paths
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/baoma.car.com/tlsca/tlsca.baoma.car.com-cert.pem
+      # Client key and cert for SSL handshake with Fabric CA
+      # client:
+      #   key:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+      #   cert:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca.baoma.car.com
+  ca.benchi.car.com:
+    url: https://ca.benchi.car.com:7054
+    # [Optional] The optional server name for target override
+    #grpcOptions:
+    #  ssl-target-name-override: ca.org2.car.com
+    tlsCACerts:
+      # Comma-Separated list of paths
+      path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/benchi.car.com/tlsca/tlsca.benchi.car.com-cert.pem
+      # Client key and cert for SSL handshake with Fabric CA
+      # client:
+      #   key:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+      #   cert:
+      #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+     # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca.benchi.car.com
+
+
+  # ca.chunyuhui.car.com:
+  #   url: https://ca.chunyuhui.car.com:7054
+  #   # [Optional] The optional server name for target override
+  #   #grpcOptions:
+  #   #  ssl-target-name-override: ca.org2.car.com
+  #   tlsCACerts:
+  #     # Comma-Separated list of paths
+  #     path: ${GOPATH}/src/fabric_car/GenesisFile/crypto-config/peerOrganizations/chunyuhui.car.com/tlsca/tlsca.chunyuhui.car.com-cert.pem
+  #     # Client key and cert for SSL handshake with Fabric CA
+  #     # client:
+  #     #   key:
+  #     #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.key
+  #     #   cert:
+  #     #     path: ${GOPATH}/src/github.com/hyperledger/fabric-sdk-go/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.car.com/users/User1@tls.car.com/tls/client.crt
+
+  #    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+  #    # needed to enroll and invoke new users.
+  #   registrar:
+  #     enrollId: admin
+  #     enrollSecret: adminpw
+  #   # [Optional] The optional name of the CA.
+  #   caName: ca.chunyuhui.car.com
+# EntityMatchers enable substitution of network hostnames with static configurations
+ # so that properties can be mapped. Regex can be used for this purpose
+# UrlSubstitutionExp can be empty which means the same network hostname will be used
+# UrlSubstitutionExp can be given same as mapped peer url, so that mapped peer url can be used
+# UrlSubstitutionExp can have golang regex matchers like $1.local.example.$2:$3 for pattern
+ # like peer0.org1.car.com:1234 which converts peer0.org1.car.com to peer0.org1.local.car.com:1234
+# sslTargetOverrideUrlSubstitutionExp follow in the same lines as
+ # SubstitutionExp for the fields gprcOptions.ssl-target-name-override respectively
+# In any case mappedHost's config will be used, so mapped host cannot be empty, if entityMatchers are used
+#entityMatchers:
+entityMatchers:
+  peer:
+
+    - pattern: (\w+).baoma.car.com:(\d+)
+      urlSubstitutionExp: 59.110.136.102:7051
+      eventUrlSubstitutionExp: 59.110.136.102:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.baoma.car.com
+      mappedHost: peer0.baoma.car.com
+
+
+    # - pattern: (\w+).baoma.car.com:(\d+)
+    #   urlSubstitutionExp: 192.168.56.112:7051
+    #   eventUrlSubstitutionExp: 192.168.56.112:7053
+    #   sslTargetOverrideUrlSubstitutionExp: peer1.baoma.car.com
+    #   mappedHost: peer1.baoma.car.com
+
+
+    - pattern: (\w+).benchi.car.com:(\d+)
+      urlSubstitutionExp: 47.94.166.33:7051
+      eventUrlSubstitutionExp: 47.94.166.33:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.benchi.car.com
+      mappedHost: peer0.benchi.car.com
+
+
+    # - pattern: (\w+).chunyuhui.car.com:(\d+)
+    #   urlSubstitutionExp: 192.168.56.101:7051
+    #   eventUrlSubstitutionExp: 192.168.56.101:7053
+    #   sslTargetOverrideUrlSubstitutionExp: peer0.chunyuhui.car.com
+    #   mappedHost: peer0.chunyuhui.car.com
+
+
+    # - pattern: (\w+).benchi.car.com:(\d+)
+    #   urlSubstitutionExp: 192.168.56.112:7051
+    #   sslTargetOverrideUrlSubstitutionExp: peer1.baoma.car.com
+    #   mappedHost: peer1.baoma.car.com
+   
+
+  orderer:
+
+   
+    - pattern: (\w+).car.(\w+):(\d+)
+      urlSubstitutionExp: grpc://39.105.34.144:7050
+      sslTargetOverrideUrlSubstitutionExp: car0.car.com
+      mappedHost: car0.car.com
+
+    # - pattern: (\w+).example.(\w+):(\d+)
+    #   urlSubstitutionExp: localhost:7050
+    #   sslTargetOverrideUrlSubstitutionExp: hyc0.car.com
+    #   mappedHost: hyc0.car.com
+
+
+    # - pattern:  (\w+).example.(\w+)
+    #   urlSubstitutionExp: grpc://192.168.56.114:7050
+    #   sslTargetOverrideUrlSubstitutionExp: hyc1.car.com
+    #   mappedHost: hyc1.car.com
+
+    # - pattern:  (\w+).example.(\w+)
+    #   urlSubstitutionExp: grpc://192.168.56.116:7050
+    #   sslTargetOverrideUrlSubstitutionExp: hyc2.car.com
+    #   mappedHost: hyc2.car.com
+
+
+
+      
+
+    
+  certificateAuthority:
+    - pattern: (\w+).baoma.example.(\w+)
+      urlSubstitutionExp: https://59.110.136.102:7054
+      sslTargetOverrideUrlSubstitutionExp: ca.baoma.car.com
+      mappedHost: ca.baoma.car.com
+
+    - pattern: (\w+).benchi.example.(\w+)
+      urlSubstitutionExp: https://47.94.166.33:7054
+      sslTargetOverrideUrlSubstitutionExp: ca.benchi.car.com
+      mappedHost: ca.benchi.car.com
+
+    # - pattern: (\w+).chunyuhui.example.(\w+)
+    #   urlSubstitutionExp: https://192.168.56.101:7054
+    #   sslTargetOverrideUrlSubstitutionExp: ca.chunyuhui.car.com
+    #   mappedHost: ca.chunyuhui.car.com
+      
+
+      
+

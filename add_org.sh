@@ -180,8 +180,8 @@ echo "#########  Generating ${ORG_ADD_NAME} config material ###############"
   echo "##########################################################"
 
 #将加密文件复制过来
-if [ ! -d "${ORG_ADD_NAME}-artifacts/crypto-config/peerOrganizations/${ORG_ADD_NAME}.example.com" ]; then
-cp -Rf crypto-config/peerOrganizations/${ORG_ADD_NAME}.example.com ${ORG_ADD_NAME}-artifacts/crypto-config/peerOrganizations/
+if [ ! -d "${ORG_ADD_NAME}-artifacts/crypto-config/peerOrganizations/${ORG_ADD_NAME}.car.com" ]; then
+cp -Rf crypto-config/peerOrganizations/${ORG_ADD_NAME}.car.com ${ORG_ADD_NAME}-artifacts/crypto-config/peerOrganizations/
 fi
 
 
