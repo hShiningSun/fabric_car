@@ -13,7 +13,7 @@ var routes = gin.Default()
 func main() {
 
 	routes.POST("car/invoke", testInvokeChincode)
-	routes.Run(":8080")
+	routes.Run("47.94.166.33:8080")
 	// num := 6
 
 	// switch num {
