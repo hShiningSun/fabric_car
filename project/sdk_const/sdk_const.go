@@ -2,7 +2,7 @@ package sdk_const
 
 const (
 	// ConfigFilePath 初始化sdk的时候要读取配置文件
-	ConfigFilePath = "../../configfile/configfile.yaml"
+	ConfigFilePath = "${GOPATH}/src/fabric_car/project/configfile/configfile.yaml"
 	// Config1FilePathClient                 = "../../configfile/config-client.yaml"
 	// Config2FilePathEntityMatchers         = "../../configfile/config-entityMatchers.yaml"
 	// Config3FilePathChannel                = "../../configfile/config-channel.yaml"
