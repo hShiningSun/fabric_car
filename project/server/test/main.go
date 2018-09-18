@@ -4,45 +4,36 @@ import (
 	"fabric_car/project/sdk_chaincode"
 	"fabric_car/project/sdk_channel"
 	"fmt"
-	// "fabric_car/project/sdk_const"
-	// "fabric_car/project/sdk_helper"
-	// "fabric_car/project/sdk_order"
-	// "fabric_car/project/sdk_peer"
-	// "fmt"
-	// "strings"
-	// "github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
-	// "github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
-	// // "github.com/hyperledger/fabric-sdk-go/test/integration"
-	// "github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
+
+	"github.com/gin-gonic/gin"
 )
 
-type kk struct {
-	st1 string
-	st2 string
-}
+var routes = gin.Default()
 
 func main() {
 
-	num := 6
+	routes.POST("car/invoke", testInvokeChincode)
+	routes.Run(":8080")
+	// num := 6
 
-	switch num {
-	case 0:
-		testCreateChannel() // 创建频道
-	case 1:
-		testJoinChannel() // 加入频道
-	case 2:
-		testInstanllChaincode() //安装链码
-	case 3:
-		testIntantiateChaincode() //实例化链码
-	case 4:
-		testInvokeChincode() //调用链码
-	case 5:
-		testQueryChainCode() //查询链码
-	case 6:
-		testUpdragChainCode() //升级链码
-	default:
+	// switch num {
+	// case 0:
+	// 	testCreateChannel() // 创建频道
+	// case 1:
+	// 	testJoinChannel() // 加入频道
+	// case 2:
+	// 	testInstanllChaincode() //安装链码
+	// case 3:
+	// 	testIntantiateChaincode() //实例化链码
+	// case 4:
+	// 	testInvokeChincode() //调用链码
+	// case 5:
+	// 	testQueryChainCode() //查询链码
+	// case 6:
+	// 	testUpdragChainCode() //升级链码
+	// default:
 
-	}
+	// }
 }
 func testCreateChannel() {
 	err := sdk_channel.CreateChannel("mychannel", "Admin", "chenman")
@@ -70,7 +61,7 @@ func testIntantiateChaincode() {
 	sdk_chaincode.InstantiateChaincode()
 }
 
-func testInvokeChincode() {
+func testInvokeChincode(c *gin.Context) {
 	sdk_chaincode.InvokeChainCode()
 }
 
