@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"fabric_car/chaincode/go/action"
+	"fabric_car/chaincode/go/car01/action"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"

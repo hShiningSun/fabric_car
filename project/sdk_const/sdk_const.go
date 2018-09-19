@@ -2,7 +2,7 @@ package sdk_const
 
 const (
 	// ConfigFilePath 初始化sdk的时候要读取配置文件
-	ConfigFilePath = "/root/hycGo/src/fabric_car/project/configfile/configfile.yaml"
+	ConfigFilePath = "/Users/ychou/hycGo/src/fabric_car/project/configfile/configfile.yaml" //"/root/hycGo/src/fabric_car/project/configfile/configfile.yaml"
 	// Config1FilePathClient                 = "../../configfile/config-client.yaml"
 	// Config2FilePathEntityMatchers         = "../../configfile/config-entityMatchers.yaml"
 	// Config3FilePathChannel                = "../../configfile/config-channel.yaml"
@@ -15,19 +15,19 @@ const (
 // chaincode 相关
 const (
 	// ChainCodePath chaincode 存在的路径
-	ChainCodePath = "fabric_car/chaincode/go/chaincode_example02"
+	ChainCodePath = "fabric_car/chaincode/go/car01"
 
 	// ChainCodeVersion chaincode 版本
-	ChainCodeVersion = "0.0.3"
+	ChainCodeVersion = "0.0.2"
 
 	// ChainCodeName chaincode 名字
-	ChainCodeName = "cars"
+	ChainCodeName = "cc_car" //"cars"
 
 	// ChainCodePolicy 链码安装背书策略
 	ChainCodePolicy = "OR ('baomaMSP.member','benchiMSP.member')"
 
 	// ChainCodeInstantiateArgs 安装链码的 参数
-	ChainCodeInstantiateArgs = "init,baoma,10,benchi,10"
+	ChainCodeInstantiateArgs = "init" //"init,baoma,10,benchi,10"
 
 	// ChainCodeInvokeArgs 链码调用invoke的参数
 	ChainCodeInvokeArgs = "baoma,benchi,2"

@@ -31,29 +31,29 @@ var routes = gin.Default()
 
 func main() {
 
-	routes.POST("car/invoke", testInvokeChincode)
-	routes.POST("car/create", createCar)
-	routes.Run(":8888")
-	// num := 6
+	// routes.POST("car/invoke", testInvokeChincode)
+	// routes.POST("car/create", createCar)
+	// routes.Run(":8888")
+	num := 3
 
-	// switch num {
-	// case 0:
-	// 	testCreateChannel() // 创建频道
-	// case 1:
-	// 	testJoinChannel() // 加入频道
-	// case 2:
-	// 	testInstanllChaincode() //安装链码
-	// case 3:
-	// 	testIntantiateChaincode() //实例化链码
-	// case 4:
-	// 	testInvokeChincode() //调用链码
-	// case 5:
-	// 	testQueryChainCode() //查询链码
-	// case 6:
-	// 	testUpdragChainCode() //升级链码
-	// default:
+	switch num {
+	case 0:
+		testCreateChannel() // 创建频道
+	case 1:
+		testJoinChannel() // 加入频道
+	case 2:
+		testInstanllChaincode() //安装链码
+	case 3:
+		testIntantiateChaincode() //实例化链码
+	case 4:
+		testInvokeChincode() //调用链码
+	case 5:
+		testQueryChainCode() //查询链码
+	case 6:
+		testUpdragChainCode() //升级链码
+	default:
 
-	// }
+	}
 }
 func testCreateChannel() {
 	err := sdk_channel.CreateChannel("mychannel", "Admin", "chenman")
@@ -131,7 +131,7 @@ func getJSONString(c *gin.Context) string { //[][]byte {
 	return string(jsonst)
 }
 
-func testInvokeChincode(c *gin.Context) {
+func testInvokeChincode() {
 	sdk_chaincode.InvokeChainCodeTest()
 }
 
