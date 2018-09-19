@@ -1,18 +1,38 @@
 package main
 
 import (
+	"encoding/json"
 	"fabric_car/project/sdk_chaincode"
 	"fabric_car/project/sdk_channel"
 	"fmt"
+	"net/http"
+
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
+	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
+
+type resultInfo struct {
+	Code string `json:"code"` //Status 在json中用status替换
+	Msg  string `json:"msg"`
+	Data car    `json:"data"`
+}
+
+type car struct {
+	CarID  int     `json:"carId"`  // 汽车id
+	Name   int     `json:"name"`   // 汽车名字
+	Color  int     `json:"color"`  // 颜色
+	Amount float64 `json:"amount"` // 汽车金额
+	// IDCard       string  `json:"idCard"`       // 身份证
+}
 
 var routes = gin.Default()
 
 func main() {
 
 	routes.POST("car/invoke", testInvokeChincode)
+	routes.POST("car/create", createCar)
 	routes.Run(":8888")
 	// num := 6
 
@@ -61,8 +81,58 @@ func testIntantiateChaincode() {
 	sdk_chaincode.InstantiateChaincode()
 }
 
+func createCar(c *gin.Context) {
+
+	jsonSt := getJSONString(c)
+	request := &channel.Request{
+		ChaincodeID: "cc_car",
+		Fcn:         "create",
+		Args:        [][]byte{[]byte(jsonSt)},
+	}
+
+	response := sdk_chaincode.InvokeChainCode(*request)
+
+	responSt := string(response.Payload)
+
+	var retursInfo resultInfo
+	err := json.Unmarshal([]byte(responSt), &retursInfo)
+
+	if err == nil && retursInfo.Data.CarID == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+		})
+	} else if err == nil && retursInfo.Data.CarID != 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+			"data":    retursInfo.Data,
+		})
+	}
+
+}
+
+// getJSONString 得到服务器传来转化后的json
+func getJSONString(c *gin.Context) string { //[][]byte {
+
+	var obj car
+	err := c.BindJSON(&obj)
+	if err == nil {
+
+	}
+	// 转化好了对象 再转化成json字符串
+	jsonst, errjson := json.Marshal(obj)
+	if errjson != nil {
+		logrus.Debug("转化有误，检查getJsonSt")
+	}
+
+	fmt.Print(string(jsonst))
+	//return [][]byte{[]byte(string(jsonst))}
+	return string(jsonst)
+}
+
 func testInvokeChincode(c *gin.Context) {
-	sdk_chaincode.InvokeChainCode()
+	sdk_chaincode.InvokeChainCodeTest()
 }
 
 func testQueryChainCode() {

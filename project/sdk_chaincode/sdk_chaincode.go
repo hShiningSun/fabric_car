@@ -164,8 +164,22 @@ func QueryChaincode() {
 
 }
 
+// InvokeChainCode 正式调用的方法
+func InvokeChainCode(request channel.Request) channel.Response {
+	sdk := sdk_helper.Get1sdk()
+	context := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
+	channelClient := sdk_helper.Get3channelClient(context, sdk_const.ChannelName)
+
+	peer1, err := sdk_peer.GetPeerWithNameOrURL(sdk_const.PeerName)
+	resp, err := channelClient.Execute(request, channel.WithTargets(peer1))
+	if err != nil {
+		fmt.Println("invoke chaincode err = " + err.Error())
+	}
+	return resp
+}
+
 // iterations 并发的数量
-func InvokeChainCode() {
+func InvokeChainCodeTest() {
 	sdk := sdk_helper.Get1sdk()
 	context := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
 	channelClient := sdk_helper.Get3channelClient(context, sdk_const.ChannelName)
