@@ -2,10 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fabric_car/chaincode/go/car01/action"
 	"fmt"
 	"strconv"
-
-	"fabric_car/chaincode/go/car01/action"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
@@ -16,8 +15,8 @@ type CarChincode struct {
 
 type car struct {
 	CarID  int     `json:"carId"`  // 汽车id
-	Name   int     `json:"name"`   // 汽车名字
-	Color  int     `json:"color"`  // 颜色
+	Name   string  `json:"name"`   // 汽车名字
+	Color  string  `json:"color"`  // 颜色
 	Amount float64 `json:"amount"` // 汽车金额
 	// IDCard       string  `json:"idCard"`       // 身份证
 }
@@ -103,6 +102,8 @@ func (c *CarChincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return c.create(args, stub)
 	case action.Update:
 		return c.update(args, stub)
+	case action.Query:
+		return c.query(args, stub)
 	case action.Delete:
 		return c.delete(args, stub)
 	default:
@@ -194,11 +195,104 @@ func (c *CarChincode) create(args []string, stub shim.ChaincodeStubInterface) pe
 }
 func (c *CarChincode) update(args []string, stub shim.ChaincodeStubInterface) peer.Response {
 
-	return response(true, "", nil)
+	if len(args) != 1 {
+		return response(true, "update car args error", nil)
+	}
+	jsonSt := args[0]
+	var newCar car
+	err := json.Unmarshal([]byte(jsonSt), &newCar)
+	if err != nil {
+		return response(true, "update car json error:"+err.Error(), nil)
+	}
+
+	oldCar, err := stub.GetState(strconv.Itoa(newCar.CarID))
+	if err != nil {
+		return response(false, "get oldCar with createCar is carId,error="+err.Error(), nil)
+	}
+	if oldCar == nil {
+		return response(false, "updateCar  carId is nohaved", nil)
+	}
+	carByte, err := json.Marshal(newCar)
+	if err != nil {
+		return response(false, err.Error(), nil)
+	}
+	err = stub.PutState(strconv.Itoa(newCar.CarID), carByte)
+	if err != nil {
+		return response(false, "put carjson error ="+err.Error(), nil)
+	}
+
+	return response(true, "update car successful", &newCar)
 }
 func (c *CarChincode) delete(args []string, stub shim.ChaincodeStubInterface) peer.Response {
 
+	carID := args[0]
+	if carID == "" {
+		return response(false, "delete car order args error", nil)
+	}
+	carbyte, err := stub.GetState(carID)
+	if err != nil {
+		return response(false, "delete car order err="+err.Error(), nil)
+	}
+
+	if carbyte == nil {
+		return response(false, "delete car order byte=nil", nil)
+	}
+
+	err = stub.DelState(carID)
+	if err != nil {
+		return response(false, "delete car order err="+err.Error(), nil)
+	}
+
+	return response(true, "delete successful", nil)
+}
+func (c *CarChincode) query(args []string, stub shim.ChaincodeStubInterface) peer.Response {
+	if len(args) != 2 {
+		return response(true, "query car args error num = "+string(len(args)), nil)
+	}
+	querytype := args[0]
+	switch querytype {
+	case action.Property:
+		return c.queryPropery(args[1], stub)
+	case action.Order:
+		return c.queryOrder(args[1], stub)
+	default:
+		return response(false, "not have  find  query type", nil)
+	}
+
 	return response(true, "", nil)
+}
+func (c *CarChincode) queryPropery(name string, stub shim.ChaincodeStubInterface) peer.Response {
+	if name == "" {
+		return response(false, "query property args error", nil)
+	}
+	value, err := stub.GetState(name)
+	if err != nil {
+		return response(false, "query property err="+err.Error(), nil)
+	}
+
+	return response(true, name+" property is "+string(value), nil)
+
+}
+func (c *CarChincode) queryOrder(carID string, stub shim.ChaincodeStubInterface) peer.Response {
+	if carID == "" {
+		return response(false, "query car order args error", nil)
+	}
+	carbyte, err := stub.GetState(carID)
+	if err != nil {
+		return response(false, "query car order err="+err.Error(), nil)
+	}
+
+	if carbyte == nil {
+		return response(false, "query car order byte=nil", nil)
+	}
+
+	var car_queryed car
+	if err = json.Unmarshal(carbyte, &car_queryed); err != nil {
+		return response(false, "query car order byte Unmarshal error="+err.Error(), nil)
+	}
+
+	return response(true, "query successful: carID = "+strconv.Itoa(car_queryed.CarID), &car_queryed)
+
 }
 
 func main() {

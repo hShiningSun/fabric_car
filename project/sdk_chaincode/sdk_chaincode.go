@@ -1,6 +1,7 @@
 package sdk_chaincode
 
 import (
+	"errors"
 	"fabric_car/project/sdk_const"
 	"fabric_car/project/sdk_helper"
 	"fabric_car/project/sdk_peer"
@@ -21,55 +22,79 @@ import (
 	// "github.com/hyperledger/fabric-sdk-go/test/integration"
 )
 
-func InstallChaincode() {
+type InstallChainCodeRequest struct {
+	OrgUser          string
+	OrgName          string
+	PeerURL          string
+	ChaincodeName    string
+	ChainCodePath    string
+	ChaincodeVersion string
+}
+
+func InstallChaincode(request InstallChainCodeRequest) error {
 	// 第一步获取sdk
 	sdk := sdk_helper.Get1sdk()
 
 	// 第二步获取上下文
-	context := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
+	context := sdk_helper.Get2Context(sdk, request.OrgUser, request.OrgName)
 
 	// 第三步获取需要的客户端
 	remsClient := sdk_helper.Get3resmgmtClint(context)
 
 	// 获取需要安装链码的peer
-	peerchenman, _ := sdk_peer.GetPeerWithNameOrURL(sdk_const.PeerName)
+	peer, _ := sdk_peer.GetPeerWithNameOrURL(request.PeerURL)
 
 	// 组装安装请求
 	gopath := os.Getenv("GOPATH")
-	ccpkg, err := gopackager.NewCCPackage(sdk_const.ChainCodePath, gopath)
+	ccpkg, err := gopackager.NewCCPackage(request.ChainCodePath, gopath)
 	if err != nil {
 		fmt.Println("get ccpkg err = " + err.Error())
 	}
 	ccreq := resmgmt.InstallCCRequest{
-		Name:    sdk_const.ChainCodeName,
-		Path:    sdk_const.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
-		Version: sdk_const.ChainCodeVersion,
+		Name:    request.ChaincodeName,
+		Path:    request.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
+		Version: request.ChaincodeVersion,
 		Package: ccpkg,
 	}
 
 	// 开始安装 ,填写一个请求，和节点  不填写节点 就默认所有
-	ccreponse, err := remsClient.InstallCC(ccreq, resmgmt.WithTargets(peerchenman))
+	ccreponse, err := remsClient.InstallCC(ccreq, resmgmt.WithTargets(peer))
 
 	if err != nil {
 		fmt.Println("cc install err = " + err.Error())
+		return err
 	}
 
 	if len(ccreponse) <= 0 {
 		fmt.Println("cc install err")
+		return errors.New("cc install err")
 	} else {
 		fmt.Println("cc install success")
+		return nil
 	}
 
 }
 
-// 实例化chaincode
-func InstantiateChaincode() {
+// InstantiateChaincodeRequest 调用服务器实例化链码的参数
+type InstantiateChaincodeRequest struct {
+	OrgUser                  string
+	OrgName                  string
+	PeerURL                  string
+	ChainCodePolicy          string
+	ChainCodeInstantiateArgs string
+	ChaincodeName            string
+	ChainCodePath            string
+	ChaincodeVersion         string
+}
+
+// InstantiateChaincode 实例化chaincode
+func InstantiateChaincode(request InstantiateChaincodeRequest) error {
 	sdk := sdk_helper.Get1sdk()
-	context1 := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
+	context1 := sdk_helper.Get2Context(sdk, request.OrgUser, request.OrgName)
 	resmClient := sdk_helper.Get3resmgmtClint(context1)
 
-	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(sdk_const.OrgName))
-	user, err := mspClient.GetSigningIdentity(sdk_const.UserName)
+	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(request.OrgName))
+	user, err := mspClient.GetSigningIdentity(request.OrgUser)
 
 	key := user.Identifier().MSPID + "_" + user.Identifier().ID
 	sessions := make(map[string]context.ClientProvider)
@@ -87,34 +112,34 @@ func InstantiateChaincode() {
 	// 实例化链码策略
 
 	// 这个报错ccPolicy := cauthdsl.SignedByAnyMember(members)
-	ccPolicy, err := cauthdsl.FromString(sdk_const.ChainCodePolicy)
+	ccPolicy, err := cauthdsl.FromString(request.ChainCodePolicy)
 	if err != nil {
 		fmt.Println("get ccpolicy  err = " + err.Error())
 	}
 
 	Args1 := [][]byte{}
-	argSts := strings.Split(sdk_const.ChainCodeInstantiateArgs, ",")
+	argSts := strings.Split(request.ChainCodeInstantiateArgs, ",")
 
 	for _, st := range argSts {
 		Args1 = append(Args1, []byte(st))
 	}
 
 	reqcc := resmgmt.InstantiateCCRequest{
-		Name:    sdk_const.ChainCodeName,
-		Path:    sdk_const.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
-		Version: sdk_const.ChainCodeVersion,
+		Name:    request.ChaincodeName,
+		Path:    request.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
+		Version: request.ChaincodeVersion,
 		Policy:  ccPolicy,
 		Args:    Args1, //[][]byte{[]byte("init"), []byte("chenman"), []byte("10"), []byte("lixingxing"), []byte("10")},
 	}
 
 	// 给chenman 实例化
-	peerchenman, _ := sdk_peer.GetPeerWithNameOrURL(sdk_const.PeerName)
-	fmt.Println("peer is url = " + peerchenman.URL())
+	peer, _ := sdk_peer.GetPeerWithNameOrURL(request.PeerURL)
+	fmt.Println("peer is url = " + peer.URL())
 
-	response, err := resmClient.InstantiateCC(sdk_const.ChannelName, reqcc, resmgmt.WithTargets(peerchenman))
+	response, err := resmClient.InstantiateCC(sdk_const.ChannelName, reqcc, resmgmt.WithTargets(peer))
 	if err != nil {
 		fmt.Println("instantiate cc  err = " + err.Error())
-		return
+		return err
 	}
 
 	if response.TransactionID == "" {
@@ -123,6 +148,7 @@ func InstantiateChaincode() {
 		fmt.Println("instantiate cc Successful")
 	}
 
+	return nil
 }
 
 //查询
@@ -164,13 +190,21 @@ func QueryChaincode() {
 
 }
 
-// InvokeChainCode 正式调用的方法
-func InvokeChainCode(request channel.Request) channel.Response {
-	sdk := sdk_helper.Get1sdk()
-	context := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
-	channelClient := sdk_helper.Get3channelClient(context, sdk_const.ChannelName)
+// InvokeChainCodeRequest 服务器url的参数
+type InvokeChainCodeRequest struct {
+	OrgUser     string
+	OrgName     string
+	PeerURL     string
+	ChannelName string
+}
 
-	peer1, err := sdk_peer.GetPeerWithNameOrURL(sdk_const.PeerName)
+// InvokeChainCode 正式调用的方法
+func InvokeChainCode(request channel.Request, invokeRequest InvokeChainCodeRequest) channel.Response {
+	sdk := sdk_helper.Get1sdk()
+	context := sdk_helper.Get2Context(sdk, invokeRequest.OrgUser, invokeRequest.OrgName)
+	channelClient := sdk_helper.Get3channelClient(context, invokeRequest.ChannelName)
+
+	peer1, err := sdk_peer.GetPeerWithNameOrURL(invokeRequest.PeerURL)
 	resp, err := channelClient.Execute(request, channel.WithTargets(peer1))
 	if err != nil {
 		fmt.Println("invoke chaincode err = " + err.Error())
@@ -210,48 +244,62 @@ func InvokeChainCodeTest() {
 
 }
 
-func UpgradeChancode() {
+// UpgradeChancodeRequest 调用服务器升级链码的参数
+type UpgradeChancodeRequest struct {
+	OrgUser              string
+	OrgName              string
+	PeerURL              string
+	ChainCodePolicy      string
+	ChainCodeUpdrageArgs string
+	ChaincodeName        string
+	ChainCodePath        string
+	ChaincodeVersion     string
+	ChannelName          string
+}
+
+func UpgradeChancode(request UpgradeChancodeRequest) error {
 
 	sdk := sdk_helper.Get1sdk()
-	context1 := sdk_helper.Get2Context(sdk, sdk_const.UserName, sdk_const.OrgName)
+	context1 := sdk_helper.Get2Context(sdk, request.OrgUser, request.OrgName)
 	client1 := sdk_helper.Get3resmgmtClint(context1)
 
-	ccPolicy, err := cauthdsl.FromString(sdk_const.ChainCodePolicy)
+	ccPolicy, err := cauthdsl.FromString(request.ChainCodePolicy)
 	if err != nil {
 		fmt.Println("get ccpolicy  err = " + err.Error())
 	}
 
 	//Args:    [][]byte{[]byte("init"), []byte("chenman"), []byte("10"), []byte("lixingxing"), []byte("10")},
 	Args1 := [][]byte{}
-	argSts := strings.Split(sdk_const.ChainCodeUpdrageArgs, ",")
+	argSts := strings.Split(request.ChainCodeUpdrageArgs, ",")
 
 	for _, st := range argSts {
 		Args1 = append(Args1, []byte(st))
 	}
 
 	reqcc := resmgmt.UpgradeCCRequest{
-		Name:    sdk_const.ChainCodeName,
-		Path:    sdk_const.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
-		Version: sdk_const.ChainCodeVersion,
+		Name:    request.ChaincodeName,
+		Path:    request.ChainCodePath, //不能填写背书节点的路径，填写本地sdk能读到的路径
+		Version: request.ChaincodeVersion,
 		Args:    Args1,
 		Policy:  ccPolicy,
 	}
 
-	peer1, err := sdk_peer.GetPeerWithNameOrURL(sdk_const.PeerName)
-	resp, err := client1.UpgradeCC(sdk_const.ChannelName, reqcc, resmgmt.WithTargets(peer1))
+	peer1, err := sdk_peer.GetPeerWithNameOrURL(request.PeerURL)
+	resp, err := client1.UpgradeCC(request.ChannelName, reqcc, resmgmt.WithTargets(peer1))
 
 	if err != nil {
 		fmt.Println("chaincode upgrade err = " + err.Error())
 
-		return
+		return err
 	}
 
 	if resp.TransactionID == "" {
 		fmt.Println("chaincode upgrade err = " + err.Error())
 
-		return
+		return errors.New("TransactionID 为空")
 	} else {
 		fmt.Println("chaincode upgrade successful ")
 	}
 
+	return nil
 }

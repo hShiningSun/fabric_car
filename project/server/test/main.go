@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fabric_car/project/sdk_chaincode"
 	"fabric_car/project/sdk_channel"
+	"fabric_kafka/project/sdk_const"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/sirupsen/logrus"
@@ -21,8 +23,8 @@ type resultInfo struct {
 
 type car struct {
 	CarID  int     `json:"carId"`  // 汽车id
-	Name   int     `json:"name"`   // 汽车名字
-	Color  int     `json:"color"`  // 颜色
+	Name   string  `json:"name"`   // 汽车名字
+	Color  string  `json:"color"`  // 颜色
 	Amount float64 `json:"amount"` // 汽车金额
 	// IDCard       string  `json:"idCard"`       // 身份证
 }
@@ -32,57 +34,178 @@ var routes = gin.Default()
 func main() {
 
 	// routes.POST("car/invoke", testInvokeChincode)
-	// routes.POST("car/create", createCar)
-	// routes.Run(":8888")
-	num := 3
+	routes.GET("channel/create", createChannel)       //routes.GET("channel/create:channelid/:orguser/:orgname", createChannel)
+	routes.GET("channel/join", joinChannel)           //routes.POST("channel/join/:orguser/:orgname/:peer", joinChannel)
+	routes.GET("chaincode/install", installChaincode) //routes.POST("chaincode/install/:orguser/:orgname/:peer/:chaincodePath", installChaincode)
+	routes.GET("chaincode/instantiated", instantiatedChaincode)
+	routes.GET("chaincode/upgrade", upgradeChaincode)
 
-	switch num {
-	case 0:
-		testCreateChannel() // 创建频道
-	case 1:
-		testJoinChannel() // 加入频道
-	case 2:
-		testInstanllChaincode() //安装链码
-	case 3:
-		testIntantiateChaincode() //实例化链码
-	case 4:
-		testInvokeChincode() //调用链码
-	case 5:
-		testQueryChainCode() //查询链码
-	case 6:
-		testUpdragChainCode() //升级链码
-	default:
+	// 调用
+	routes.POST("car/create", createCar)
+	routes.POST("car/query", queryCar)
 
-	}
+	routes.Run(":8888")
+	// num := 3
+
+	// switch num {
+	// case 0:
+	// 	testCreateChannel() // 创建频道
+	// case 1:
+	// 	testJoinChannel() // 加入频道
+	// case 2:
+	// 	testInstanllChaincode() //安装链码
+	// case 3:
+	// 	testIntantiateChaincode() //实例化链码
+	// case 4:
+	// 	testInvokeChincode() //调用链码
+	// case 5:
+	// 	testQueryChainCode() //查询链码
+	// case 6:
+	// 	testUpdragChainCode() //升级链码
+	// default:
+
+	// }
 }
-func testCreateChannel() {
-	err := sdk_channel.CreateChannel("mychannel", "Admin", "chenman")
+
+func createChannel(c *gin.Context) {
+	channelid := c.DefaultQuery("channelid", sdk_const.ChannelName) //可设置默认值
+	orguser := c.Query("orguser")
+	orgname := c.Query("orgname")
+	fmt.Println(channelid)
+	fmt.Println(orguser)
+	fmt.Println(orgname)
+	err := sdk_channel.CreateChannel(channelid, orguser, orgname)
 	if err != nil {
-		fmt.Println("create channel failed err = " + err.Error())
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
 	} else {
-		fmt.Println("~~create channel successful")
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "创建channel成功",
+		})
 	}
 }
-
-func testJoinChannel() {
-	err := sdk_channel.JoinChannel("192.168.56.115", "Admin", "chenman")
+func joinChannel(c *gin.Context) {
+	orguser := c.Query("orguser")
+	orgname := c.Query("orgname")
+	peerURL := c.Query("peer")
+	err := sdk_channel.JoinChannel(peerURL, orguser, orgname)
 	if err != nil {
-		fmt.Println("join channel failed err = " + err.Error())
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
 	} else {
-		fmt.Println("~~join channel successful")
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "加入channel成功",
+		})
+	}
+
+}
+func installChaincode(c *gin.Context) {
+
+	request := sdk_chaincode.InstallChainCodeRequest{
+		OrgUser:          c.Query("orguser"),
+		OrgName:          c.Query("orgname"),
+		PeerURL:          c.Query("peer"),
+		ChaincodeName:    c.Query("chaincodeName"),
+		ChainCodePath:    c.Query("chaincodePath"),
+		ChaincodeVersion: c.Query("chaincodeVersion"),
+	}
+
+	err := sdk_chaincode.InstallChaincode(request)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "installChincode成功",
+		})
+	}
+
+}
+func instantiatedChaincode(c *gin.Context) {
+	//
+	request := sdk_chaincode.InstantiateChaincodeRequest{
+		OrgUser:                  c.Query("orguser"),
+		OrgName:                  c.Query("orgname"),
+		PeerURL:                  c.Query("peer"),
+		ChainCodePolicy:          c.Query("chaincodePolicy"),
+		ChainCodeInstantiateArgs: c.Query("chaincodeInstantiateArgs"),
+		ChaincodeName:            c.Query("chaincodeName"),
+		ChainCodePath:            c.Query("chaincodePath"),
+		ChaincodeVersion:         c.Query("chaincodeVersion"),
+	}
+
+	err := sdk_chaincode.InstantiateChaincode(request)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "instantiatedChincode成功",
+		})
 	}
 }
+func upgradeChaincode(c *gin.Context) {
+	installedRequest := sdk_chaincode.InstallChainCodeRequest{
+		OrgUser:          c.Query("orguser"),
+		OrgName:          c.Query("orgname"),
+		PeerURL:          c.Query("peer"),
+		ChaincodeName:    c.Query("chaincodeName"),
+		ChainCodePath:    c.Query("chaincodePath"),
+		ChaincodeVersion: c.Query("chaincodeVersion"),
+	}
 
-func testInstanllChaincode() {
-	sdk_chaincode.InstallChaincode()
+	err := sdk_chaincode.InstallChaincode(installedRequest)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "installChincode成功",
+		})
+	}
+
+	upgradeRequest := sdk_chaincode.UpgradeChancodeRequest{
+		OrgUser:              c.Query("orguser"),
+		OrgName:              c.Query("orgname"),
+		PeerURL:              c.Query("peer"),
+		ChaincodeName:        c.Query("chaincodeName"),
+		ChainCodePath:        c.Query("chaincodePath"),
+		ChaincodeVersion:     c.Query("chaincodeVersion"),
+		ChainCodePolicy:      c.Query("chaincodePolicy"),
+		ChainCodeUpdrageArgs: c.Query("chaincodeUpdrageArgs"),
+		ChannelName:          c.Query("channelName"),
+	}
+
+	err = sdk_chaincode.UpgradeChancode(upgradeRequest)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1,
+			"message": err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    0,
+			"message": "升级成功",
+		})
+	}
+
 }
-
-func testIntantiateChaincode() {
-	sdk_chaincode.InstantiateChaincode()
-}
-
 func createCar(c *gin.Context) {
-
 	jsonSt := getJSONString(c)
 	request := &channel.Request{
 		ChaincodeID: "cc_car",
@@ -90,7 +213,14 @@ func createCar(c *gin.Context) {
 		Args:        [][]byte{[]byte(jsonSt)},
 	}
 
-	response := sdk_chaincode.InvokeChainCode(*request)
+	invokeRequest := sdk_chaincode.InvokeChainCodeRequest{
+		OrgUser:     c.Query("orguser"),
+		OrgName:     c.Query("orgname"),
+		PeerURL:     c.Query("peer"),
+		ChannelName: c.Query("channelName"),
+	}
+
+	response := sdk_chaincode.InvokeChainCode(*request, invokeRequest)
 
 	responSt := string(response.Payload)
 
@@ -108,8 +238,81 @@ func createCar(c *gin.Context) {
 			"message": retursInfo.Msg,
 			"data":    retursInfo.Data,
 		})
+	} else if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+		})
+	}
+}
+
+func queryCar(c *gin.Context) {
+
+	//写查询了
+
+	// jsonSt := getJSONString(c)
+
+	args := [][]byte{}
+	argSts := strings.Split(c.Query("chaincodeQueryArgs"), ",")
+
+	for _, st := range argSts {
+		args = append(args, []byte(st))
 	}
 
+	request := &channel.Request{
+		ChaincodeID: "cc_car",
+		Fcn:         "query",
+		Args:        args,
+	}
+
+	invokeRequest := sdk_chaincode.InvokeChainCodeRequest{
+		OrgUser:     c.Query("orguser"),
+		OrgName:     c.Query("orgname"),
+		PeerURL:     c.Query("peer"),
+		ChannelName: c.Query("channelName"),
+	}
+
+	response := sdk_chaincode.InvokeChainCode(*request, invokeRequest)
+
+	responSt := string(response.Payload)
+
+	var retursInfo resultInfo
+	err := json.Unmarshal([]byte(responSt), &retursInfo)
+
+	if err == nil && retursInfo.Data.CarID == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+		})
+	} else if err == nil && retursInfo.Data.CarID != 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+			"data":    retursInfo.Data,
+		})
+	} else if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    retursInfo.Code,
+			"message": retursInfo.Msg,
+		})
+	}
+}
+
+func testJoinChannel() {
+	err := sdk_channel.JoinChannel("192.168.56.115", "Admin", "chenman")
+	if err != nil {
+		fmt.Println("join channel failed err = " + err.Error())
+	} else {
+		fmt.Println("~~join channel successful")
+	}
+}
+
+func testInstanllChaincode() {
+	// sdk_chaincode.InstallChaincode()
+}
+
+func testIntantiateChaincode() {
+	// sdk_chaincode.InstantiateChaincode()
 }
 
 // getJSONString 得到服务器传来转化后的json
@@ -141,8 +344,8 @@ func testQueryChainCode() {
 
 func testUpdragChainCode() {
 	// 先安装新的链码 升级才能找到新的包
-	sdk_chaincode.InstallChaincode()
-	sdk_chaincode.UpgradeChancode()
+	// sdk_chaincode.InstallChaincode()
+	// sdk_chaincode.UpgradeChancode()
 }
 
 // 首先 根据配置文件 获取sdk

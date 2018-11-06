@@ -9,4 +9,11 @@ const (
 	Delete = "delete"
 	//Update 更新订单
 	Update = "update"
+	//Query 查询订单
+	Query = "query"
+)
+
+const (
+	Property = "property"
+	Order    = "order"
 )
