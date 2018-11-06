@@ -54,7 +54,7 @@ const (
 	// ChannelName channelName
 	ChannelName = "mychannel"
 	// ChannelConfigPath 频道的配置文件，一开始创世纪生成的
-	ChannelConfigPath = "../../../GenesisFile/channel-artifacts/mychannel.tx"
+	ChannelConfigPath = "/root/hycGo/src/fabric_car/GenesisFile/channel-artifacts/mychannel.tx"
 )
 
 const (
