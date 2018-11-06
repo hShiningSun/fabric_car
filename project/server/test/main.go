@@ -34,7 +34,7 @@ var routes = gin.Default()
 func main() {
 
 	// gin.SetMode(gin.ReleaseMode) // 设置模式
-	gin.SetMode(gin.DebugMode)
+	// gin.SetMode(gin.DebugMode)
 	// routes.POST("car/invoke", testInvokeChincode)
 	routes.GET("channel/create", createChannel)       //routes.GET("channel/create:channelid/:orguser/:orgname", createChannel)
 	routes.GET("channel/join", joinChannel)           //routes.POST("channel/join/:orguser/:orgname/:peer", joinChannel)
