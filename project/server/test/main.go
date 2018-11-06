@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fabric_car/project/sdk_chaincode"
 	"fabric_car/project/sdk_channel"
-	"fabric_kafka/project/sdk_const"
+	"fabric_car/project/sdk_const"
 	"fmt"
 	"net/http"
 	"strings"
