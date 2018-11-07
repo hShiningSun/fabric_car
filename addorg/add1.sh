@@ -17,7 +17,11 @@ function getOriginConfigJson () {
   echo "====== config_block.pb ----> config_block.json ======"
   configtxlator proto_decode --input config_block.pb --type common.Block --output config_block.json
 
+  echo "Installing jq"
+  apt-get -y update && apt-get -y install jq
+
   echo "====== jq + config_block.json = config.json  ======"
+
   jq .data.data[0].payload.data.config config_block.json > $ORIGINAL_CONFIG_JSON
 }
 
