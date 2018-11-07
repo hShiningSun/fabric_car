@@ -7,10 +7,10 @@ ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrga
 ORDERER=orderer.car.com:7050   
 
 #例如 ORG_NAME=baoma
-ORG_NAME=baoma
+ORG_NAME=audi
 
 #例如 ORG_MSPID=baomaMSP
-ORG_MSPID=baomaMSP
+ORG_MSPID=audiMSP
 
 # 创世纪 生成的新增json组织路径
 GENESIS_CREATE_ORG_JSON=../GenesisFile/channel-artifacts/${ORG_NAME}.json
