@@ -114,7 +114,7 @@ services:
     volumes:
         - /var/run/:/host/var/run/
         - ../chaincode/go/chaincode_example02/chaincode_example02.go:/opt/gopath/src/github.com/hyperledger/fabric/chaincode/go/chaincode_example02/chaincode_example02.go
-        - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ../addorg:/opt/gopath/src/github.com/hyperledger/fabric/peer/addorg/
         - ../chaincode/go/:/opt/go/src/github.com/hyperledger/fabric/chaincode/go
 
         - ../GenesisFile/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
