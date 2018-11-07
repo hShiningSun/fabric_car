@@ -1,16 +1,16 @@
 CHANNEL=mychannel
 
 #例如 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/car.com/orderers/car0.car.com/msp/tlscacerts/tlsca.car.com-cert.pem
-ORDERER_CA=  
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/car.com/orderers/car0.car.com/msp/tlscacerts/tlsca.car.com-cert.pem  
 
 #例如 ORDERER=orderer.car.com:7050
-ORDERER=   
+ORDERER=orderer.car.com:7050   
 
 #例如 ORG_NAME=baoma
-ORG_NAME= 
+ORG_NAME=baoma
 
 #例如 ORG_MSPID=baomaMSP
-ORG_MSPID=
+ORG_MSPID=baomaMSP
 
 # 创世纪 生成的新增json组织路径
 GENESIS_CREATE_ORG_JSON=../GenesisFile/channel-artifacts/${ORG_NAME}.json
