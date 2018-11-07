@@ -4,7 +4,7 @@ CHANNEL=mychannel
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/car.com/orderers/car0.car.com/msp/tlscacerts/tlsca.car.com-cert.pem  
 
 #例如 ORDERER=orderer.car.com:7050
-ORDERER=orderer.car.com:7050   
+ORDERER=car0.car.com:7050   
 
 #例如 ORG_NAME=baoma
 ORG_NAME=audi
