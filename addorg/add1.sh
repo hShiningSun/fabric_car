@@ -1,6 +1,6 @@
 
 # import env
-. env.sh
+. ./env.sh
 
 function getOriginConfigJson () {
   echo "====== fetch channel new config and save the config_block.pb ======"
