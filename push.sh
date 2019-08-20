@@ -1,6 +1,6 @@
 MESSAGE="$1"
 if [ -z "${MESSAGE}" ]; then
-echo "please input message "
+echo "please input message ~~~"
 exit 1
 fi
 
